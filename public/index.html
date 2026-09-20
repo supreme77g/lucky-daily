@@ -1107,12 +1107,12 @@
     try { localStorage.setItem(PREMIUM_CACHE_KEY, JSON.stringify({ premium, checkedAt: Date.now() })); } catch (e) { /* ignore */ }
   }
 
-  async function refreshPremiumStatus() {
+  async function refreshPremiumStatus(force) {
     const email = getStoredEmail();
     if (!email) { premiumStatus = false; renderPremiumUI(); return; }
 
     const cached = readPremiumCache();
-    if (cached && Date.now() - cached.checkedAt < PREMIUM_CACHE_TTL) {
+    if (!force && cached && Date.now() - cached.checkedAt < PREMIUM_CACHE_TTL) {
       premiumStatus = cached.premium;
       renderPremiumUI();
       return;
@@ -1127,6 +1127,18 @@
       premiumStatus = cached ? cached.premium : false;
     }
     renderPremiumUI();
+    return premiumStatus;
+  }
+
+  // Right after checkout, Paddle's webhook can take a few seconds to reach
+  // our server. Poll a handful of times instead of checking once and giving
+  // up (which would otherwise get cached as "not premium" for 5 minutes).
+  async function pollPremiumStatus() {
+    for (let i = 0; i < 6; i++) {
+      const premium = await refreshPremiumStatus(true);
+      if (premium) return;
+      await new Promise(r => setTimeout(r, 3000));
+    }
   }
 
   function openPaddleCheckout() {
@@ -1136,7 +1148,6 @@
     }
     Paddle.Checkout.open({
       items: [{ priceId: PADDLE_PRICE_ID, quantity: 1 }],
-      settings: { successUrl: window.location.href },
     });
   }
 
@@ -1148,7 +1159,7 @@
         if (event.name === 'checkout.completed') {
           const email = event.data && event.data.customer && event.data.customer.email;
           if (email) rememberEmail(email);
-          refreshPremiumStatus();
+          pollPremiumStatus();
         }
       },
     });
