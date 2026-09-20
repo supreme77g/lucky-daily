@@ -8,4 +8,4 @@
   node_bundler = "esbuild"
 
 [build.environment]
-  SECRETS_SCAN_OMIT_KEYS = "PADDLE_ENV"
+  SECRETS_SCAN_OMIT_KEYS = "PADDLE_ENV,PADDLE_PRICE_ID"
