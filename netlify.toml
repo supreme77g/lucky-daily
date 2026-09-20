@@ -1,0 +1,8 @@
+[build]
+  functions = "netlify/functions"
+  # If your Lucky Daily site is static HTML/CSS/JS, point this at that folder.
+  # e.g. publish = "public"
+  publish = "public"
+
+[functions]
+  node_bundler = "esbuild"

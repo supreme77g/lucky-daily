@@ -1,0 +1,9 @@
+{
+  "name": "lucky-daily-backend",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0",
+    "@paddle/paddle-node-sdk": "^2.4.0"
+  }
+}
