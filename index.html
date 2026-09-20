@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucky Daily</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Space+Mono:wght@400;700&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #E9E4D4;
+    --paper-2: #DFD9C6;
+    --ink: #18140F;
+    --red: #C31C22;
+    --red-dim: #A5171C;
+    --gold: #C79A1E;
+    --blue: #223A5E;
+    --line: #B9AF93;
+    --white: #FBF9F2;
+  }
+  :root[data-theme="dark"] {
+    --paper: #17140F;
+    --paper-2: #1E1A13;
+    --ink: #EDE7D6;
+    --red: #E14A45;
+    --red-dim: #C43A36;
+    --gold: #E0B94A;
+    --blue: #7FA0CC;
+    --line: #4A4433;
+    --white: #201C15;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #17140F;
+      --paper-2: #1E1A13;
+      --ink: #EDE7D6;
+      --red: #E14A45;
+      --red-dim: #C43A36;
+      --gold: #E0B94A;
+      --blue: #7FA0CC;
+      --line: #4A4433;
+      --white: #201C15;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Libre Franklin', -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 0 0 48px 0;
+  }
+  .sheet {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    background: var(--paper);
+    position: relative;
+  }
+
+  /* ---- masthead ---- */
+  .masthead {
+    background: var(--red);
+    color: var(--white);
+    padding: 22px 20px 18px;
+    border-bottom: 4px solid var(--ink);
+  }
+  .masthead-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    opacity: 0.85;
+    margin-bottom: 6px;
+  }
+  .masthead h1 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: 52px;
+    line-height: 0.85;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+  .masthead .sub {
+    font-size: 13px;
+    margin-top: 6px;
+    font-style: italic;
+    max-width: 30ch;
+    line-height: 1.35;
+  }
+
+  /* ---- tab nav ---- */
+  .tabs {
+    display: flex;
+    background: var(--ink);
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 11px 2px;
+    font-family: 'Space Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.02em;
+    color: var(--paper);
+    opacity: 0.55;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .tab.active { opacity: 1; box-shadow: inset 0 -2px 0 var(--gold); }
+
+  /* ---- month / premium bar ---- */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 20px;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--line);
+    gap: 10px;
+  }
+  .month-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.03em;
+  }
+  .month-tag .mt-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--red);
+    flex-shrink: 0;
+  }
+  .month-tag select {
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    font-family: 'Space Mono', monospace;
+    font-size: 10.5px;
+    opacity: 0.55;
+    max-width: 108px;
+  }
+  .premium-pill {
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    background: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.03em;
+    padding: 5px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .premium-pill.active {
+    background: var(--gold);
+    color: var(--ink);
+  }
+  .limit-banner {
+    margin: 14px 0 0;
+    border: 1px dashed var(--gold);
+    padding: 12px 14px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    display: none;
+  }
+  .limit-banner.open { display: block; }
+  .limit-banner button {
+    margin-top: 8px;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 8px 14px;
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  /* ---- section rule ---- */
+  .rule {
+    height: 1px;
+    background: var(--line);
+    margin: 0 20px;
+  }
+  .rule.thick { height: 3px; background: var(--ink); margin: 0; }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ================= BOARD VIEW ================= */
+  .board-hero {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+  }
+  .character { flex-shrink: 0; }
+  .hero-quote {
+    font-style: italic;
+    font-size: 13px;
+    line-height: 1.4;
+    flex: 1;
+  }
+  .hero-quote .who {
+    display: block;
+    margin-top: 5px;
+    font-style: normal;
+    font-family: 'Space Mono', monospace;
+    font-size: 10.5px;
+    color: var(--red);
+  }
+  .hero-quote .host-name {
+    display: block;
+    font-style: normal;
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    color: var(--blue);
+    margin-bottom: 3px;
+  }
+
+  /* ================= STATE PICK VIEW ================= */
+  .state-section { padding: 20px 20px 4px; }
+  .state-intro {
+    font-size: 13px;
+    line-height: 1.45;
+    opacity: 0.75;
+    margin: 0 0 18px;
+  }
+  .sfield { margin-bottom: 14px; }
+  .sfield label {
+    display: block;
+    font-size: 12px;
+    opacity: 0.65;
+    margin-bottom: 6px;
+  }
+  .sfield select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid var(--line);
+    background: var(--white);
+    color: var(--ink);
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    border-radius: 2px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+    background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+  }
+  .game-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .game-opt {
+    border: 1px solid var(--line);
+    background: var(--paper-2);
+    padding: 12px 10px;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink);
+  }
+  .game-opt .go-name {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    display: block;
+  }
+  .game-opt .go-desc {
+    font-size: 10.5px;
+    opacity: 0.6;
+    display: block;
+    margin-top: 2px;
+  }
+  .game-opt.active {
+    border-color: var(--red);
+    box-shadow: inset 0 0 0 1px var(--red);
+    background: var(--paper);
+  }
+  .state-result {
+    margin: 22px 20px 0;
+    display: none;
+  }
+  .state-result.open { display: block; }
+  .balls-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .ball {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ball.special {
+    background: var(--red);
+    color: var(--white);
+  }
+  .state-caption {
+    font-size: 12.5px;
+    opacity: 0.7;
+    line-height: 1.4;
+    margin: 0 0 6px;
+  }
+  .state-note {
+    font-size: 11px;
+    opacity: 0.5;
+    line-height: 1.4;
+  }
+
+  /* ================= MY NUMBERS VIEW ================= */
+  .mine-inputs-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .mine-input {
+    width: 46px;
+    height: 46px;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 18px;
+    border: 1px solid var(--line);
+    background: var(--white);
+    color: var(--ink);
+    padding: 0;
+  }
+  .mine-input.digit-shape { border-radius: 2px; }
+  .mine-input.ball-shape { border-radius: 50%; }
+  .mine-input.special-shape {
+    border-radius: 50%;
+    border-color: var(--red);
+    color: var(--red);
+    font-weight: 700;
+  }
+  .mine-input::-webkit-outer-spin-button,
+  .mine-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .mine-input[type="number"] { -moz-appearance: textfield; }
+  .saved-list { margin-top: 8px; }
+  .saved-card {
+    border: 1px solid var(--line);
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .sc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 9px;
+  }
+  .sc-label {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+  }
+  .sc-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 9.5px;
+    opacity: 0.5;
+    display: block;
+    margin-top: 2px;
+  }
+  .sc-delete {
+    background: none;
+    border: none;
+    color: var(--red);
+    font-family: 'Space Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  .sc-nums { display: flex; gap: 6px; flex-wrap: wrap; }
+  .sc-chip {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .sc-chip.digit-shape { border-radius: 2px; }
+  .sc-chip.special-shape { background: var(--red); color: var(--white); }
+  .saved-empty {
+    padding: 14px 0;
+    font-size: 12.5px;
+    opacity: 0.5;
+    border-top: 1px solid var(--line);
+  }
+
+  .board-section { padding: 18px 20px 4px; }
+  .board-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    opacity: 0.6;
+    margin: 0 0 10px;
+  }
+  .chip-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .chip {
+    flex: 1;
+    text-align: center;
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 8px 0;
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+  }
+  .chip.chip-in {
+    animation: chipPop 0.5s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes chipPop {
+    0% { transform: translateY(12px) scale(0.82); opacity: 0; }
+    55% { transform: translateY(-3px) scale(1.05); opacity: 1; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  .hot-section {
+    display: flex;
+    gap: 12px;
+    padding: 18px 20px 4px;
+  }
+  .hot-box {
+    flex: 1;
+    border: 2px solid var(--blue);
+    padding: 12px 8px 14px;
+    text-align: center;
+  }
+  .hot-box .hb-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+  .hot-box .hb-num {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .jackpot {
+    margin: 22px 20px 0;
+    border: 2px solid var(--gold);
+    background: var(--ink);
+    padding: 14px 14px 16px;
+  }
+  .jackpot-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .reels {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+  }
+  .reel {
+    width: 58px;
+    height: 64px;
+    overflow: hidden;
+    background: var(--paper);
+    border-radius: 2px;
+    position: relative;
+  }
+  .reel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 8px 8px -8px rgba(0,0,0,0.45), inset 0 -8px 8px -8px rgba(0,0,0,0.45);
+    pointer-events: none;
+  }
+  .reel-strip {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(0);
+  }
+  .reel-strip div {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 38px;
+    color: var(--ink);
+  }
+
+  .shake-btn {
+    display: block;
+    width: calc(100% - 40px);
+    margin: 20px 20px 0;
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    padding: 16px;
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+  }
+  .shake-btn:active { background: var(--red-dim); }
+  .shake-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .board-footer {
+    margin: 28px 20px 0;
+    padding-top: 14px;
+    border-top: 3px solid var(--ink);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    opacity: 0.55;
+    line-height: 1.6;
+  }
+
+  /* ================= DAILY VIEW ================= */
+  .picker {
+    padding: 22px 20px 8px;
+  }
+  .picker-label {
+    font-size: 13px;
+    color: var(--ink);
+    opacity: 0.65;
+    margin: 0 0 14px;
+  }
+  .modes {
+    display: flex;
+    flex-direction: column;
+  }
+  .mode {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 4px;
+    border-top: 1px solid var(--line);
+    background: transparent;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    font-family: inherit;
+    color: var(--ink);
+    transition: padding-left 0.15s ease;
+  }
+  .mode:last-child { border-bottom: 1px solid var(--line); }
+  .mode:hover, .mode:focus-visible { padding-left: 10px; outline: none; }
+  .mode:focus-visible { box-shadow: inset 3px 0 0 var(--red); }
+  .mode.active { padding-left: 10px; box-shadow: inset 3px 0 0 var(--red); }
+  .mode-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    width: 20px;
+    flex-shrink: 0;
+  }
+  .mode-text h3 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0 0 2px;
+    letter-spacing: 0.01em;
+  }
+  .mode-text p {
+    font-size: 12.5px;
+    margin: 0;
+    opacity: 0.65;
+    line-height: 1.3;
+  }
+
+  .panel {
+    padding: 18px 20px 4px;
+    display: none;
+  }
+  .panel.open { display: block; }
+  .quote-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .mode-character {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .quote {
+    background: var(--paper-2);
+    border-left: 3px solid var(--gold);
+    padding: 12px 14px;
+    font-style: italic;
+    font-size: 13.5px;
+    line-height: 1.45;
+    flex: 1;
+    min-width: 0;
+  }
+  .quote .who {
+    display: block;
+    margin-top: 6px;
+    font-style: normal;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--red);
+  }
+  .field {
+    margin-bottom: 14px;
+  }
+  .field label {
+    display: block;
+    font-size: 12px;
+    opacity: 0.65;
+    margin-bottom: 6px;
+  }
+  .dob-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .dob-input {
+    padding: 10px 0;
+    border: 1px solid var(--line);
+    background: var(--white);
+    color: var(--ink);
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 2px;
+    width: 52px;
+  }
+  .dob-input.dob-year { width: 74px; }
+  .dob-sep {
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    opacity: 0.4;
+  }
+  .pull-btn {
+    width: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 15px;
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    margin-top: 2px;
+  }
+  .pull-btn:active { background: var(--red); }
+  .pull-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .result {
+    margin: 24px 20px 0;
+    display: none;
+  }
+  .result.open { display: block; }
+  .result-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .result-head h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    margin: 0;
+    opacity: 0.6;
+  }
+  .stamp {
+    border: 2px solid var(--red);
+    color: var(--red);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 3px;
+    transform: rotate(-3deg);
+    letter-spacing: 0.03em;
+  }
+  .digits {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .digit {
+    flex: 1;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 40px;
+    text-align: center;
+    padding: 14px 0;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .digit.spinning, .ball.spinning {
+    filter: blur(0.6px);
+    color: var(--gold);
+  }
+  .digit.spin-set, .ball.spin-set {
+    animation: boxSettle 0.32s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes boxSettle {
+    0% { transform: scale(1.22) translateY(-4px); }
+    55% { transform: scale(0.92) translateY(1px); }
+    100% { transform: scale(1) translateY(0); }
+  }
+  .result-caption {
+    font-size: 12.5px;
+    opacity: 0.7;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .history {
+    margin: 32px 20px 0;
+  }
+  .history h4 {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    opacity: 0.6;
+    margin: 0 0 10px;
+  }
+  .history-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+  }
+  .history-row .h-mode { opacity: 0.7; }
+  .history-row .h-nums {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .history-empty {
+    padding: 14px 0;
+    font-size: 12.5px;
+    opacity: 0.5;
+    border-top: 1px solid var(--line);
+  }
+
+  .footer {
+    margin: 40px 20px 0;
+    padding-top: 14px;
+    border-top: 3px solid var(--ink);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    opacity: 0.55;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="masthead">
+    <div class="masthead-top">
+      <span id="todayDate">—</span>
+      <span>VOL. 1 · DAILY PULL</span>
+    </div>
+    <h1>LUCKY DAILY</h1>
+    <div class="sub">With Deacon Digits. Pick your method. Pull your numbers. One combo a day — make it count.</div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" id="tabBoard">TODAY'S BOARD</button>
+    <button class="tab" id="tabDaily">DAILY PULL</button>
+    <button class="tab" id="tabState">STATE PICK</button>
+    <button class="tab" id="tabMine">MY NUMBERS</button>
+  </div>
+  <div class="status-bar">
+    <div class="month-tag">
+      <span class="mt-dot" id="mtDot"></span>
+      <span id="mtName">—</span>
+    </div>
+    <button class="premium-pill" id="premiumPill">$1.99/MO · GO PREMIUM</button>
+  </div>
+  <div class="rule thick"></div>
+
+  <!-- ================= BOARD VIEW ================= -->
+  <div class="view active" id="view-board">
+
+    <div class="board-hero">
+      <div class="character">
+        <svg width="84" height="96" viewBox="0 0 84 96" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="42" cy="90" rx="34" ry="8" fill="var(--ink)" opacity="0.12"/>
+          <path d="M10 34 Q42 8 74 34 L74 40 L10 40 Z" fill="var(--red)" stroke="var(--ink)" stroke-width="2.5"/>
+          <rect x="16" y="30" width="52" height="10" fill="var(--red-dim)" stroke="var(--ink)" stroke-width="2.5"/>
+          <circle cx="42" cy="52" r="26" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="2.5"/>
+          <ellipse cx="32" cy="50" rx="6" ry="4.5" fill="var(--ink)"/>
+          <ellipse cx="53" cy="50" rx="6" ry="4.5" fill="var(--ink)"/>
+          <path d="M25 48 Q32 43 39 48" stroke="var(--gold)" stroke-width="2" fill="none"/>
+          <path d="M46 48 Q53 43 60 48" stroke="var(--gold)" stroke-width="2" fill="none"/>
+          <path d="M28 66 Q42 76 56 66" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M14 62 Q42 58 70 62 L68 68 Q42 63 16 68 Z" fill="var(--ink)"/>
+          <rect x="34" y="76" width="16" height="20" fill="var(--blue)" stroke="var(--ink)" stroke-width="2"/>
+          <circle cx="42" cy="84" r="2" fill="var(--gold)"/>
+          <circle cx="42" cy="90" r="2" fill="var(--gold)"/>
+        </svg>
+      </div>
+      <div class="hero-quote" id="hostQuote">
+        <span class="host-name">DEACON DIGITS SEZ:</span>
+        "Every day's a new draw, sugah. Shake it up and see what falls out."
+        <span class="who">— DEACON DIGITS</span>
+      </div>
+    </div>
+
+    <div class="rule"></div>
+
+    <div class="board-section">
+      <p class="board-label">TODAY'S BOARD</p>
+      <div class="chip-row" id="chipRow1"></div>
+      <div class="chip-row" id="chipRow2"></div>
+    </div>
+
+    <div class="hot-section">
+      <div class="hot-box">
+        <div class="hb-label">HOT PICK A</div>
+        <div class="hb-num" id="hot1">—</div>
+      </div>
+      <div class="hot-box">
+        <div class="hb-label">HOT PICK B</div>
+        <div class="hb-num" id="hot2">—</div>
+      </div>
+    </div>
+
+    <div class="jackpot">
+      <div class="jackpot-label">MAIN PULL</div>
+      <div class="reels">
+        <div class="reel"><div class="reel-strip" id="reelA"></div></div>
+        <div class="reel"><div class="reel-strip" id="reelB"></div></div>
+        <div class="reel"><div class="reel-strip" id="reelC"></div></div>
+      </div>
+    </div>
+
+    <button class="shake-btn" id="shakeBtn">Shake It Up</button>
+
+    <div class="board-footer">
+      FOR ENTERTAINMENT PURPOSES ONLY. NOT INTENDED TO ENCOURAGE GAMBLING.<br>
+      TAP "DAILY PULL" ABOVE FOR YOUR LOCKED PICK OF THE DAY.
+    </div>
+  </div>
+
+  <!-- ================= DAILY VIEW ================= -->
+  <div class="view" id="view-daily">
+
+    <div class="picker">
+      <p class="picker-label">Today's method —</p>
+      <div class="modes" id="modeList"></div>
+    </div>
+
+    <div class="panel" id="panel">
+      <div class="quote-row">
+        <div class="mode-character" id="modeCharacter"></div>
+        <div class="quote" id="quoteBox"></div>
+      </div>
+      <div class="field" id="dobField" style="display:none;">
+        <label for="dobMonth">Your birthday</label>
+        <div class="dob-row">
+          <input type="tel" inputmode="numeric" id="dobMonth" class="dob-input" maxlength="2" placeholder="MM">
+          <span class="dob-sep">/</span>
+          <input type="tel" inputmode="numeric" id="dobDay" class="dob-input" maxlength="2" placeholder="DD">
+          <span class="dob-sep">/</span>
+          <input type="tel" inputmode="numeric" id="dobYear" class="dob-input dob-year" maxlength="4" placeholder="YYYY">
+        </div>
+      </div>
+      <button class="pull-btn" id="pullBtn">Pull My Numbers</button>
+
+      <div class="limit-banner" id="dailyLimitBanner">
+        You've used your free Daily Pull. Go Premium ($1.99/mo) for unlimited daily pulls — plus a new app color every month.
+        <br><button id="dailyLimitPremiumBtn">Go Premium</button>
+      </div>
+    </div>
+
+    <div class="result" id="result">
+      <div class="result-head">
+        <h4 id="resultMode">—</h4>
+        <span class="stamp">TODAY'S PICK</span>
+      </div>
+      <div class="digits" id="digits"></div>
+      <p class="result-caption" id="resultCaption"></p>
+    </div>
+
+    <div class="history">
+      <h4>YOUR LAST PULLS</h4>
+      <div id="historyList"></div>
+    </div>
+
+    <div class="footer">
+      FOR ENTERTAINMENT PURPOSES ONLY. NOT INTENDED TO ENCOURAGE GAMBLING.<br>
+      ONE PULL PER DAY, PER METHOD.
+    </div>
+  </div>
+
+  <!-- ================= STATE PICK VIEW ================= -->
+  <div class="view" id="view-state">
+
+    <div class="state-section">
+      <p class="state-intro">Pick your state and your game. Deacon Digits will draw a combo in the right format — straight digits for the daily-number games, numbered balls for the jackpot games.</p>
+
+      <div class="sfield">
+        <label for="stateSelect">Your state</label>
+        <select id="stateSelect"></select>
+      </div>
+
+      <p class="board-label">GAME</p>
+      <div class="game-grid" id="gameGrid"></div>
+
+      <button class="pull-btn" id="stateGoBtn">Draw My Numbers</button>
+
+      <div class="limit-banner" id="stateLimitBanner">
+        You've used your free State Pick draw. Go Premium ($1.99/mo) for unlimited draws — plus a new app color every month.
+        <br><button id="stateLimitPremiumBtn">Go Premium</button>
+      </div>
+    </div>
+
+    <div class="state-result" id="stateResult">
+      <div class="result-head">
+        <h4 id="stateResultTitle">—</h4>
+        <span class="stamp">FRESH DRAW</span>
+      </div>
+      <div class="balls-row" id="ballsRow"></div>
+      <p class="state-caption" id="stateCaption"></p>
+    </div>
+
+    <div class="state-note" style="margin:24px 20px 0;">
+      Game formats shown are common national draw structures (straight digits, or numbered balls plus a bonus ball). Exact rules, ball ranges, and game names vary by state lottery — check your state's official site before playing.
+    </div>
+
+    <div class="footer">
+      FOR ENTERTAINMENT PURPOSES ONLY. NOT INTENDED TO ENCOURAGE GAMBLING.
+    </div>
+  </div>
+
+  <!-- ================= MY NUMBERS VIEW ================= -->
+  <div class="view" id="view-mine">
+
+    <div class="state-section">
+      <p class="state-intro">Got your own combo? Pick your game, enter your numbers, give it a name, and Deacon Digits will keep it on file for you.</p>
+
+      <p class="board-label">GAME</p>
+      <div class="game-grid" id="mineGameGrid"></div>
+
+      <div id="mineInputsWrap" style="display:none;">
+        <p class="board-label" id="mineInputsLabel">YOUR NUMBERS</p>
+        <div class="mine-inputs-row" id="mineInputsRow"></div>
+
+        <div class="sfield">
+          <label for="mineLabel">Name this pick (optional)</label>
+          <input type="text" id="mineLabel" maxlength="30" placeholder="e.g. Sunday combo"
+            style="width:100%; padding:11px 12px; border:1px solid var(--line); background:var(--white); color:var(--ink); font-family:'Libre Franklin'; font-size:14px; border-radius:2px;">
+        </div>
+
+        <button class="pull-btn" id="mineSaveBtn">Save These Numbers</button>
+
+        <div class="limit-banner" id="limitBanner">
+          You've used your free save. Go Premium ($1.99/mo) for unlimited saves — plus a new app color every month.
+          <br><button id="limitPremiumBtn">Go Premium</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="history" style="margin-top:30px;">
+      <h4>YOUR SAVED NUMBERS</h4>
+      <div class="saved-list" id="savedList"></div>
+    </div>
+
+    <div class="footer">
+      FOR ENTERTAINMENT PURPOSES ONLY. NOT INTENDED TO ENCOURAGE GAMBLING.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  /* ---------------- shared ---------------- */
+  const todayKey = new Date().toISOString().slice(0, 10);
+  function fmtDate(d) {
+    return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+  }
+  document.getElementById('todayDate').textContent = fmtDate(new Date()).toUpperCase();
+
+  /* ---------------- monthly themes ---------------- */
+  const THEMES = [
+    { name: 'Resolution Blue', tag: 'New year, clean slate', paper: '#E7ECEC', paper2: '#D9E2E2', ink: '#101820', red: '#2C5F8A', redDim: '#234C70', gold: '#C9A227', blue: '#16324F', line: '#B7C4C4', white: '#FAFCFC' },
+    { name: 'Sweetheart Red', tag: 'Valentine warmth', paper: '#F0E4E2', paper2: '#E6D3D0', ink: '#241012', red: '#B3223A', redDim: '#8E1B2F', gold: '#C79A1E', blue: '#5C1F33', line: '#D3B7B4', white: '#FBF3F2' },
+    { name: 'First Thaw Green', tag: 'Early spring', paper: '#E7EBDD', paper2: '#DAE1CB', ink: '#161C10', red: '#4C7A3B', redDim: '#3C6230', gold: '#C7A72A', blue: '#2C4A2E', line: '#C3CDAF', white: '#F7FAF1' },
+    { name: 'Bloom Pink', tag: 'April blossom', paper: '#F1E6EA', paper2: '#E7D3DB', ink: '#221016', red: '#C4457B', redDim: '#9E3663', gold: '#CBA22B', blue: '#6B3350', line: '#D9BEC8', white: '#FBF4F7' },
+    { name: 'Meadow Gold', tag: 'Taurus in bloom', paper: '#EFE8D2', paper2: '#E5DBB8', ink: '#1D1808', red: '#B98A1C', redDim: '#93701A', gold: '#DBB53B', blue: '#4C5A2E', line: '#D3C79A', white: '#FAF6E7' },
+    { name: 'Sunbeam Yellow', tag: 'Gemini bright', paper: '#F3EDCF', paper2: '#EAE0A8', ink: '#201B06', red: '#D4A017', redDim: '#AC7F12', gold: '#E8C23A', blue: '#3E4A66', line: '#DDD196', white: '#FCF8E4' },
+    { name: 'Liberty Red', tag: 'High summer', paper: '#EDE7DA', paper2: '#E1D8C3', ink: '#161821', red: '#B3202C', redDim: '#8E1922', gold: '#C79A1E', blue: '#1F3C6E', line: '#CFC6AE', white: '#FAF8F0' },
+    { name: 'Solar Orange', tag: 'Leo heat', paper: '#F1E4D3', paper2: '#E9D2B4', ink: '#1F1206', red: '#C1531B', redDim: '#9B4315', gold: '#D69A2A', blue: '#5A3319', line: '#DCC29C', white: '#FBF4E9' },
+    { name: 'Harvest Amber', tag: 'Virgo harvest', paper: '#E9E4D4', paper2: '#DFD9C6', ink: '#18140F', red: '#C31C22', redDim: '#A5171C', gold: '#C79A1E', blue: '#223A5E', line: '#B9AF93', white: '#FBF9F2' },
+    { name: 'Midnight Orange', tag: 'Scorpio Halloween', paper: '#E3DCCB', paper2: '#D6CBAF', ink: '#0E0C08', red: '#D2620B', redDim: '#A94F09', gold: '#8F7A2B', blue: '#241B10', line: '#B7AA85', white: '#F5EFE0' },
+    { name: 'Ember Rust', tag: 'Late autumn', paper: '#E9DED0', paper2: '#DDCDB6', ink: '#1C120A', red: '#9C3B21', redDim: '#7C2F1A', gold: '#B4842A', blue: '#4A2A18', line: '#CBB89E', white: '#F8F1E7' },
+    { name: 'Frost Emerald', tag: 'Capricorn winter', paper: '#E3EAE4', paper2: '#D3E0D6', ink: '#0D1712', red: '#155B3B', redDim: '#0F472E', gold: '#C79A1E', blue: '#12332B', line: '#B5C7BC', white: '#F4F9F5' },
+  ];
+  const MONTH_LABELS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function applyTheme(idx) {
+    const t = THEMES[idx];
+    const root = document.documentElement.style;
+    root.setProperty('--paper', t.paper);
+    root.setProperty('--paper-2', t.paper2);
+    root.setProperty('--ink', t.ink);
+    root.setProperty('--red', t.red);
+    root.setProperty('--red-dim', t.redDim);
+    root.setProperty('--gold', t.gold);
+    root.setProperty('--blue', t.blue);
+    root.setProperty('--line', t.line);
+    root.setProperty('--white', t.white);
+    document.getElementById('mtName').textContent = `${MONTH_LABELS[idx].toUpperCase()} \u00b7 ${t.name.toUpperCase()}`;
+  }
+
+  const realMonth = new Date().getMonth();
+  applyTheme(realMonth);
+
+  /* ---------------- premium (demo toggle) ---------------- */
+  const PREMIUM_KEY = 'luckyDailyPremium';
+  function isPremium() {
+    try { return localStorage.getItem(PREMIUM_KEY) === 'true'; } catch (e) { return false; }
+  }
+  function setPremium(val) {
+    try { localStorage.setItem(PREMIUM_KEY, val ? 'true' : 'false'); } catch (e) { /* ignore */ }
+    renderPremiumUI();
+  }
+  function renderPremiumUI() {
+    const pill = document.getElementById('premiumPill');
+    const premium = isPremium();
+    pill.textContent = premium ? '\u2713 PREMIUM' : '$1.99/MO \u00b7 GO PREMIUM';
+    pill.classList.toggle('active', premium);
+    if (premium) {
+      document.getElementById('limitBanner').classList.remove('open');
+      document.getElementById('dailyLimitBanner').classList.remove('open');
+      document.getElementById('stateLimitBanner').classList.remove('open');
+    }
+  }
+  document.getElementById('premiumPill').addEventListener('click', () => setPremium(!isPremium()));
+  document.getElementById('limitPremiumBtn').addEventListener('click', () => setPremium(true));
+  document.getElementById('dailyLimitPremiumBtn').addEventListener('click', () => setPremium(true));
+  document.getElementById('stateLimitPremiumBtn').addEventListener('click', () => setPremium(true));
+  renderPremiumUI();
+
+  /* ---------------- try-once trial gates ---------------- */
+  function hasTried(key) {
+    try { return localStorage.getItem(key) === 'true'; } catch (e) { return false; }
+  }
+  function markTried(key) {
+    try { localStorage.setItem(key, 'true'); } catch (e) { /* ignore */ }
+  }
+  const TRY_DAILY_KEY = 'luckyDailyTriedDaily';
+  const TRY_STATE_KEY = 'luckyDailyTriedState';
+
+  /* ---------------- tabs ---------------- */
+  const tabBoard = document.getElementById('tabBoard');
+  const tabDaily = document.getElementById('tabDaily');
+  const tabState = document.getElementById('tabState');
+  const tabMine = document.getElementById('tabMine');
+  const viewBoard = document.getElementById('view-board');
+  const viewDaily = document.getElementById('view-daily');
+  const viewState = document.getElementById('view-state');
+  const viewMine = document.getElementById('view-mine');
+  function showView(which) {
+    viewBoard.classList.toggle('active', which === 'board');
+    viewDaily.classList.toggle('active', which === 'daily');
+    viewState.classList.toggle('active', which === 'state');
+    viewMine.classList.toggle('active', which === 'mine');
+    tabBoard.classList.toggle('active', which === 'board');
+    tabDaily.classList.toggle('active', which === 'daily');
+    tabState.classList.toggle('active', which === 'state');
+    tabMine.classList.toggle('active', which === 'mine');
+    window.scrollTo({ top: 0 });
+  }
+  tabBoard.addEventListener('click', () => showView('board'));
+  tabDaily.addEventListener('click', () => showView('daily'));
+  tabState.addEventListener('click', () => showView('state'));
+  tabMine.addEventListener('click', () => showView('mine'));
+
+  /* ================= BOARD VIEW LOGIC ================= */
+  function rand3() {
+    return String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+  }
+  function renderChips() {
+    let idx = 0;
+    ['chipRow1', 'chipRow2'].forEach(id => {
+      const row = document.getElementById(id);
+      row.innerHTML = '';
+      for (let i = 0; i < 4; i++) {
+        const c = document.createElement('div');
+        c.className = 'chip chip-in';
+        c.style.animationDelay = (idx * 45) + 'ms';
+        c.textContent = rand3();
+        row.appendChild(c);
+        idx++;
+      }
+    });
+  }
+  function renderHot() {
+    document.getElementById('hot1').textContent = rand3();
+    document.getElementById('hot2').textContent = rand3();
+  }
+
+  /* ---------------- generic box-spin (slot-machine flicker for result boxes) ---------------- */
+  function spinBox(el, finalText, randomFn, duration, delay) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        el.classList.add('spinning');
+        let elapsed = 0;
+        let interval = 42;
+        function tick() {
+          el.textContent = randomFn();
+          elapsed += interval;
+          interval = Math.min(interval * 1.22, 140);
+          if (elapsed < duration) {
+            setTimeout(tick, interval);
+          } else {
+            el.textContent = finalText;
+            el.classList.remove('spinning');
+            el.classList.add('spin-set');
+            setTimeout(() => el.classList.remove('spin-set'), 340);
+            resolve();
+          }
+        }
+        tick();
+      }, delay);
+    });
+  }
+
+  const REEL_H = 64;
+  function buildReel(id) {
+    const strip = document.getElementById(id);
+    strip.innerHTML = '';
+    for (let cycle = 0; cycle < 5; cycle++) {
+      for (let d = 0; d < 10; d++) {
+        const div = document.createElement('div');
+        div.textContent = d;
+        strip.appendChild(div);
+      }
+    }
+  }
+  ['reelA', 'reelB', 'reelC'].forEach(buildReel);
+
+  function spinReel(id, targetDigit, loops, duration, delay) {
+    const strip = document.getElementById(id);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        strip.style.transition = 'none';
+        strip.style.transform = 'translateY(0)';
+        // force reflow
+        void strip.offsetHeight;
+        const index = loops * 10 + targetDigit;
+        strip.style.transition = `transform ${duration}ms cubic-bezier(.15,.85,.35,1)`;
+        strip.style.transform = `translateY(-${index * REEL_H}px)`;
+        setTimeout(resolve, duration);
+      }, delay);
+    });
+  }
+
+  /* ---------------- slot machine sound (synthesized, no audio files) ---------------- */
+  let audioCtx = null;
+  function getAudioCtx() {
+    if (!audioCtx) {
+      try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+      catch (e) { audioCtx = null; }
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume().catch(() => {});
+    }
+    return audioCtx;
+  }
+  function playClick(ctx, when, freq, dur, gain) {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(freq, when);
+    g.gain.setValueAtTime(gain, when);
+    g.gain.exponentialRampToValueAtTime(0.001, when + dur);
+    osc.connect(g);
+    g.connect(ctx.destination);
+    osc.start(when);
+    osc.stop(when + dur + 0.01);
+  }
+  function playClunk(ctx, when) {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(180, when);
+    osc.frequency.exponentialRampToValueAtTime(70, when + 0.12);
+    g.gain.setValueAtTime(0.35, when);
+    g.gain.exponentialRampToValueAtTime(0.001, when + 0.15);
+    osc.connect(g);
+    g.connect(ctx.destination);
+    osc.start(when);
+    osc.stop(when + 0.16);
+  }
+  function playChime(ctx, when) {
+    [660, 880].forEach((f, i) => {
+      const t = when + i * 0.09;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(f, t);
+      g.gain.setValueAtTime(0.001, t);
+      g.gain.linearRampToValueAtTime(0.22, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+      osc.connect(g);
+      g.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.4);
+    });
+  }
+  function playPromptSound() {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    playChime(ctx, ctx.currentTime + 0.02);
+  }
+  function playSpinSound() {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    const t0 = ctx.currentTime + 0.02;
+    let t = 0;
+    let interval = 0.035;
+    const totalDuration = 1.58;
+    while (t < totalDuration) {
+      playClick(ctx, t0 + t, 950 + Math.random() * 300, 0.025, 0.12);
+      interval *= 1.045;
+      t += interval;
+    }
+    playClunk(ctx, t0 + 0.90);
+    playClunk(ctx, t0 + 1.24);
+    playClunk(ctx, t0 + 1.58);
+    playChime(ctx, t0 + 1.62);
+  }
+  function playPullSound() {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    const t0 = ctx.currentTime + 0.02;
+    let t = 0;
+    let interval = 0.03;
+    const totalDuration = 0.4;
+    while (t < totalDuration) {
+      playClick(ctx, t0 + t, 950 + Math.random() * 300, 0.02, 0.12);
+      interval *= 1.08;
+      t += interval;
+    }
+    playClunk(ctx, t0 + 0.42);
+    playChime(ctx, t0 + 0.46);
+  }
+
+  const shakeBtn = document.getElementById('shakeBtn');
+  let spinning = false;
+  async function shake() {
+    if (spinning) return;
+    spinning = true;
+    shakeBtn.disabled = true;
+    playSpinSound();
+    renderChips();
+    renderHot();
+    const dA = Math.floor(Math.random() * 10);
+    const dB = Math.floor(Math.random() * 10);
+    const dC = Math.floor(Math.random() * 10);
+    await Promise.all([
+      spinReel('reelA', dA, 3, 900, 0),
+      spinReel('reelB', dB, 4, 1150, 90),
+      spinReel('reelC', dC, 4, 1400, 180),
+    ]);
+    spinning = false;
+    shakeBtn.disabled = false;
+  }
+  shakeBtn.addEventListener('click', shake);
+
+  // initial board state
+  renderChips();
+  renderHot();
+  shake();
+
+  /* ================= DAILY VIEW LOGIC ================= */
+  const MODES = [
+    {
+      id: 'birthday',
+      name: 'Birthday Numbers',
+      desc: 'Pulled straight from your date of birth.',
+      needsDob: true,
+      quote: 'A person\u2019s birthday carries the same three digits their whole life \u2014 you\u2019re just never asked to look at them the right way.',
+      who: '\u2014 THE REVEREND',
+      art: `<svg width="56" height="64" viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="32" cy="68" rx="26" ry="5" fill="var(--ink)" opacity="0.12"/>
+        <path d="M10 32 Q32 10 54 32 L54 38 Q32 24 10 38 Z" fill="var(--ink)"/>
+        <rect x="17" y="56" width="30" height="12" fill="var(--ink)"/>
+        <path d="M26 56 L32 64 L38 56 Z" fill="var(--white)" stroke="var(--ink)" stroke-width="1.5"/>
+        <circle cx="32" cy="40" r="19" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="2.5"/>
+        <circle cx="24" cy="40" r="5.5" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="40" cy="40" r="5.5" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <line x1="29.5" y1="40" x2="34.5" y2="40" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="24" cy="40" r="2" fill="var(--ink)"/>
+        <circle cx="40" cy="40" r="2" fill="var(--ink)"/>
+        <path d="M24 51 Q32 55 40 51" stroke="var(--ink)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M28 60 L30 65 M34 63 L32 65 M32 65 L32 68" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>`,
+    },
+    {
+      id: 'zodiac',
+      name: 'Zodiac Pull',
+      desc: 'Today\u2019s sign-based combo, recalculated daily.',
+      needsDob: true,
+      quote: 'Every sign\u2019s got a number that follows it around. Today, yours is loud.',
+      who: '\u2014 BIG LUCK',
+      art: `<svg width="56" height="64" viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="32" cy="68" rx="26" ry="5" fill="var(--ink)" opacity="0.12"/>
+        <path d="M8 30 Q32 6 56 30 L56 34 L8 34 Z" fill="var(--gold)" stroke="var(--ink)" stroke-width="2.5"/>
+        <rect x="10" y="30" width="44" height="7" fill="var(--red)" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M44 20 L46 25 L51 25.5 L47 29 L48.5 34 L44 31 L39.5 34 L41 29 L37 25.5 L42 25 Z" fill="var(--red)"/>
+        <path d="M16 56 L32 62 L48 56 L48 68 L16 68 Z" fill="var(--blue)" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="32" cy="62" r="3" fill="var(--gold)" stroke="var(--ink)" stroke-width="1.2"/>
+        <circle cx="32" cy="42" r="19" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="2.5"/>
+        <ellipse cx="24" cy="42" rx="7" ry="4.5" fill="var(--ink)"/>
+        <ellipse cx="40" cy="42" rx="7" ry="4.5" fill="var(--ink)"/>
+        <line x1="31" y1="42" x2="33" y2="42" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M24 53 Q32 58 40 53" stroke="var(--ink)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M32 56 L33.5 59 L32 61 L30.5 59 Z" fill="var(--white)"/>
+      </svg>`,
+    },
+    {
+      id: 'hotcold',
+      name: 'Hot & Cold Tracker',
+      desc: 'Weighted toward numbers overdue to hit.',
+      needsDob: false,
+      quote: 'Some numbers been sitting out in the cold too long. Today we bring one in.',
+      who: '\u2014 SUPER DUDE',
+      art: `<svg width="56" height="64" viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="32" cy="68" rx="26" ry="5" fill="var(--ink)" opacity="0.12"/>
+        <path d="M14 46 L4 62 L18 56 Z" fill="var(--red)" stroke="var(--ink)" stroke-width="1.5"/>
+        <path d="M50 46 L60 62 L46 56 Z" fill="var(--red)" stroke="var(--ink)" stroke-width="1.5"/>
+        <rect x="16" y="55" width="32" height="13" fill="var(--blue)" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M32 58 L36 63 L32 68 L28 63 Z" fill="var(--gold)" stroke="var(--ink)" stroke-width="1.2"/>
+        <path d="M10 28 Q32 8 54 28 L52 36 Q32 22 12 36 Z" fill="var(--ink)"/>
+        <circle cx="32" cy="41" r="19" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="2.5"/>
+        <path d="M14 37 Q23 32 32 37 Q41 32 50 37 L50 43 Q41 39 32 43 Q23 39 14 43 Z" fill="var(--red)"/>
+        <circle cx="24" cy="40" r="2.3" fill="var(--white)"/>
+        <circle cx="40" cy="40" r="2.3" fill="var(--white)"/>
+        <path d="M23 52 Q32 58 41 52" stroke="var(--ink)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      </svg>`,
+    },
+    {
+      id: 'random',
+      name: 'Random Lucky Pick',
+      desc: 'No method, no math \u2014 pure chance.',
+      needsDob: false,
+      quote: 'Sometimes the best system is no system at all. Just pull.',
+      who: '\u2014 TOOTSIE',
+      art: `<svg width="56" height="64" viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="32" cy="68" rx="26" ry="5" fill="var(--ink)" opacity="0.12"/>
+        <path d="M16 58 Q32 50 48 58 L48 68 L16 68 Z" fill="var(--gold)" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="16" cy="46" r="3" fill="none" stroke="var(--gold)" stroke-width="2"/>
+        <circle cx="48" cy="46" r="3" fill="none" stroke="var(--gold)" stroke-width="2"/>
+        <path d="M9 30 Q32 6 55 30 Q55 40 50 44 Q52 30 32 26 Q12 30 14 44 Q9 40 9 30 Z" fill="var(--red)" stroke="var(--ink)" stroke-width="2.5"/>
+        <circle cx="20" cy="24" r="2.2" fill="var(--white)"/>
+        <circle cx="30" cy="18" r="2.2" fill="var(--white)"/>
+        <circle cx="42" cy="22" r="2.2" fill="var(--white)"/>
+        <circle cx="32" cy="42" r="18" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="2.5"/>
+        <ellipse cx="24" cy="41" rx="4" ry="4.5" fill="var(--ink)"/>
+        <ellipse cx="40" cy="41" rx="4" ry="4.5" fill="var(--ink)"/>
+        <path d="M19 37 Q24 34 29 37" stroke="var(--ink)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M35 37 Q40 34 45 37" stroke="var(--ink)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <path d="M22 51 Q32 60 42 51 Q32 56 22 51 Z" fill="var(--ink)"/>
+      </svg>`,
+    },
+  ];
+
+  let activeMode = null;
+
+  const modeList = document.getElementById('modeList');
+  MODES.forEach((m, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'mode';
+    btn.dataset.id = m.id;
+    btn.innerHTML = `
+      <span class="mode-num">${String(i + 1).padStart(2, '0')}</span>
+      <span class="mode-text">
+        <h3>${m.name}</h3>
+        <p>${m.desc}</p>
+      </span>
+    `;
+    btn.addEventListener('click', () => selectMode(m.id));
+    modeList.appendChild(btn);
+  });
+
+  function selectMode(id) {
+    activeMode = MODES.find(m => m.id === id);
+    document.querySelectorAll('.mode').forEach(el => {
+      el.classList.toggle('active', el.dataset.id === id);
+    });
+    const panel = document.getElementById('panel');
+    panel.classList.add('open');
+    document.getElementById('modeCharacter').innerHTML = activeMode.art;
+    document.getElementById('quoteBox').innerHTML = `${activeMode.quote}<span class="who">${activeMode.who}</span>`;
+    document.getElementById('dobField').style.display = activeMode.needsDob ? 'block' : 'none';
+    document.getElementById('result').classList.remove('open');
+    document.getElementById('dailyLimitBanner').classList.remove('open');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function seededRandom(seedStr) {
+    let h = 0;
+    for (let i = 0; i < seedStr.length; i++) {
+      h = (Math.imul(31, h) + seedStr.charCodeAt(i)) | 0;
+    }
+    return function () {
+      h = (Math.imul(h, 1103515245) + 12345) | 0;
+      return ((h >>> 0) % 1000) / 1000;
+    };
+  }
+
+  function generateDigits(mode, dobValue) {
+    let seed = todayKey + '-' + mode.id;
+    if (mode.needsDob && dobValue) seed += '-' + dobValue;
+    const rnd = seededRandom(seed);
+    let digits;
+    if (mode.id === 'birthday' && dobValue) {
+      const nums = dobValue.replace(/-/g, '').split('').map(Number);
+      digits = [nums[nums.length - 3], nums[nums.length - 2], nums[nums.length - 1]];
+      if (digits.some(isNaN)) digits = [0, 0, 0];
+    } else if (mode.id === 'zodiac' && dobValue) {
+      const month = parseInt(dobValue.slice(5, 7), 10);
+      const day = parseInt(dobValue.slice(8, 10), 10);
+      digits = [
+        (month + day) % 10,
+        Math.floor(rnd() * 10),
+        (month * day) % 10,
+      ];
+    } else {
+      digits = [
+        Math.floor(rnd() * 10),
+        Math.floor(rnd() * 10),
+        Math.floor(rnd() * 10),
+      ];
+    }
+    return digits;
+  }
+
+  const dobMonth = document.getElementById('dobMonth');
+  const dobDay = document.getElementById('dobDay');
+  const dobYear = document.getElementById('dobYear');
+  dobMonth.addEventListener('input', () => { if (dobMonth.value.length >= 2) dobDay.focus(); });
+  dobDay.addEventListener('input', () => { if (dobDay.value.length >= 2) dobYear.focus(); });
+
+  function getDobValue() {
+    const m = parseInt(dobMonth.value, 10);
+    const d = parseInt(dobDay.value, 10);
+    const y = parseInt(dobYear.value, 10);
+    const thisYear = new Date().getFullYear();
+    if (!m || m < 1 || m > 12) return null;
+    if (!d || d < 1 || d > 31) return null;
+    if (!y || y < 1900 || y > thisYear) return null;
+    const mm = String(m).padStart(2, '0');
+    const dd = String(d).padStart(2, '0');
+    return `${y}-${mm}-${dd}`;
+  }
+
+  document.getElementById('pullBtn').addEventListener('click', () => {
+    if (!activeMode) return;
+    if (!isPremium() && hasTried(TRY_DAILY_KEY)) {
+      document.getElementById('dailyLimitBanner').classList.add('open');
+      document.getElementById('dailyLimitBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+    let dobValue = null;
+    if (activeMode.needsDob) {
+      dobValue = getDobValue();
+      if (!dobValue) {
+        document.getElementById('dobMonth').focus();
+        return;
+      }
+    }
+    const digits = generateDigits(activeMode, dobValue);
+    playPullSound();
+    showResult(activeMode, digits);
+    saveHistory(activeMode, digits);
+    markTried(TRY_DAILY_KEY);
+  });
+
+  function showResult(mode, digits) {
+    const result = document.getElementById('result');
+    result.classList.add('open');
+    document.getElementById('resultMode').textContent = mode.name.toUpperCase();
+    const digitsEl = document.getElementById('digits');
+    digitsEl.innerHTML = '';
+    const els = digits.map(() => {
+      const el = document.createElement('div');
+      el.className = 'digit';
+      el.textContent = '0';
+      digitsEl.appendChild(el);
+      return el;
+    });
+    document.getElementById('resultCaption').textContent =
+      'One combo, pulled fresh for ' + fmtDate(new Date()) + '. Come back tomorrow for the next one.';
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    els.forEach((el, i) => {
+      spinBox(el, String(digits[i]), () => Math.floor(Math.random() * 10), 500 + i * 90, i * 70);
+    });
+  }
+
+  function loadHistory() {
+    try {
+      const raw = localStorage.getItem('luckyDailyHistory');
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveHistory(mode, digits) {
+    try {
+      let hist = loadHistory();
+      hist = hist.filter(h => !(h.date === todayKey && h.modeId === mode.id));
+      hist.unshift({ date: todayKey, modeId: mode.id, modeName: mode.name, digits });
+      hist = hist.slice(0, 8);
+      localStorage.setItem('luckyDailyHistory', JSON.stringify(hist));
+      renderHistory();
+    } catch (e) { /* storage unavailable, ignore */ }
+  }
+
+  function renderHistory() {
+    const list = document.getElementById('historyList');
+    const hist = loadHistory();
+    if (!hist.length) {
+      list.innerHTML = '<div class="history-empty">No pulls yet. Pick a method above to get started.</div>';
+      return;
+    }
+    list.innerHTML = hist.map(h => `
+      <div class="history-row">
+        <span class="h-mode">${h.modeName} \u2014 ${h.date}</span>
+        <span class="h-nums">${h.digits.join(' ')}</span>
+      </div>
+    `).join('');
+  }
+
+  renderHistory();
+
+  /* ================= STATE PICK LOGIC ================= */
+  const STATES = [
+    'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware',
+    'District of Columbia','Florida','Georgia','Idaho','Illinois','Indiana','Iowa','Kansas',
+    'Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi',
+    'Missouri','Montana','Nebraska','New Hampshire','New Jersey','New Mexico','New York',
+    'North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island',
+    'South Carolina','South Dakota','Tennessee','Texas','Vermont','Virginia','Washington',
+    'West Virginia','Wisconsin','Wyoming',
+  ];
+  const stateSelect = document.getElementById('stateSelect');
+  STATES.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s;
+    opt.textContent = s;
+    stateSelect.appendChild(opt);
+  });
+  stateSelect.value = 'New York';
+
+  const GAMES = [
+    { id: 'pick3', name: 'Pick 3', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 3 },
+    { id: 'pick4', name: 'Pick 4', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 4 },
+    { id: 'cash5', name: 'Cash 5', desc: '5 numbers, 1\u201339', kind: 'balls', count: 5, max: 39 },
+    { id: 'powerball', name: 'Powerball', desc: '5 numbers 1\u201369 + Powerball', kind: 'special', count: 5, max: 69, specialLabel: 'Powerball', specialMax: 26 },
+    { id: 'megamillions', name: 'Mega Millions', desc: '5 numbers 1\u201370 + Mega Ball', kind: 'special', count: 5, max: 70, specialLabel: 'Mega Ball', specialMax: 25 },
+  ];
+  let activeGame = null;
+  const gameGrid = document.getElementById('gameGrid');
+  GAMES.forEach(g => {
+    const btn = document.createElement('button');
+    btn.className = 'game-opt';
+    btn.dataset.id = g.id;
+    btn.innerHTML = `<span class="go-name">${g.name}</span><span class="go-desc">${g.desc}</span>`;
+    btn.addEventListener('click', () => {
+      activeGame = g;
+      document.querySelectorAll('.game-opt').forEach(el => el.classList.toggle('active', el.dataset.id === g.id));
+      document.getElementById('stateResult').classList.remove('open');
+    });
+    gameGrid.appendChild(btn);
+  });
+
+  function drawUniqueNumbers(count, max) {
+    const pool = [];
+    while (pool.length < count) {
+      const n = Math.floor(Math.random() * max) + 1;
+      if (!pool.includes(n)) pool.push(n);
+    }
+    return pool.sort((a, b) => a - b);
+  }
+
+  document.getElementById('stateGoBtn').addEventListener('click', () => {
+    if (!activeGame) {
+      gameGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (!isPremium() && hasTried(TRY_STATE_KEY)) {
+      document.getElementById('stateLimitBanner').classList.add('open');
+      document.getElementById('stateLimitBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+    const g = activeGame;
+    const stateName = stateSelect.value;
+    const resultEl = document.getElementById('stateResult');
+    const ballsRow = document.getElementById('ballsRow');
+    ballsRow.innerHTML = '';
+    playPullSound();
+
+    const spins = [];
+    if (g.kind === 'digits') {
+      const digits = Array.from({ length: g.count }, () => Math.floor(Math.random() * 10));
+      digits.forEach((d, i) => {
+        const el = document.createElement('div');
+        el.className = 'ball';
+        el.style.borderRadius = '2px';
+        el.style.width = '46px';
+        el.textContent = '0';
+        ballsRow.appendChild(el);
+        spins.push(spinBox(el, String(d), () => Math.floor(Math.random() * 10), 500 + i * 90, i * 70));
+      });
+    } else {
+      const nums = drawUniqueNumbers(g.count, g.max);
+      nums.forEach((n, i) => {
+        const el = document.createElement('div');
+        el.className = 'ball';
+        el.textContent = '—';
+        ballsRow.appendChild(el);
+        spins.push(spinBox(el, String(n), () => Math.floor(Math.random() * g.max) + 1, 500 + i * 90, i * 70));
+      });
+      if (g.kind === 'special') {
+        const special = Math.floor(Math.random() * g.specialMax) + 1;
+        const el = document.createElement('div');
+        el.className = 'ball special';
+        el.textContent = '—';
+        ballsRow.appendChild(el);
+        spins.push(spinBox(el, String(special), () => Math.floor(Math.random() * g.specialMax) + 1, 500 + nums.length * 90, nums.length * 70));
+      }
+    }
+
+    document.getElementById('stateResultTitle').textContent = `${g.name.toUpperCase()} \u2014 ${stateName.toUpperCase()}`;
+    document.getElementById('stateCaption').textContent =
+      `Fresh draw for ${g.name} in ${stateName}, pulled just now by Deacon Digits.`;
+    resultEl.classList.add('open');
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    markTried(TRY_STATE_KEY);
+  });
+
+  /* ================= MY NUMBERS LOGIC ================= */
+  const SAVE_KEY = 'luckyDailySavedNumbers';
+  let mineGame = null;
+
+  const mineGameGrid = document.getElementById('mineGameGrid');
+  GAMES.forEach(g => {
+    const btn = document.createElement('button');
+    btn.className = 'game-opt';
+    btn.dataset.id = g.id;
+    btn.innerHTML = `<span class="go-name">${g.name}</span><span class="go-desc">${g.desc}</span>`;
+    btn.addEventListener('click', () => {
+      mineGame = g;
+      document.querySelectorAll('#mineGameGrid .game-opt').forEach(el => el.classList.toggle('active', el.dataset.id === g.id));
+      buildMineInputs(g);
+    });
+    mineGameGrid.appendChild(btn);
+  });
+
+  function buildMineInputs(g) {
+    const wrap = document.getElementById('mineInputsWrap');
+    const row = document.getElementById('mineInputsRow');
+    wrap.style.display = 'block';
+    row.innerHTML = '';
+    document.getElementById('mineInputsLabel').textContent =
+      g.kind === 'digits' ? 'YOUR DIGITS' : 'YOUR NUMBERS';
+
+    const shape = g.kind === 'digits' ? 'digit-shape' : 'ball-shape';
+    for (let i = 0; i < g.count; i++) {
+      const inp = document.createElement('input');
+      inp.type = 'number';
+      inp.className = `mine-input ${shape}`;
+      inp.min = g.kind === 'digits' ? 0 : 1;
+      inp.max = g.kind === 'digits' ? 9 : g.max;
+      inp.dataset.role = 'main';
+      row.appendChild(inp);
+    }
+    if (g.kind === 'special') {
+      const inp = document.createElement('input');
+      inp.type = 'number';
+      inp.className = 'mine-input special-shape';
+      inp.min = 1;
+      inp.max = g.specialMax;
+      inp.dataset.role = 'special';
+      row.appendChild(inp);
+    }
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  document.getElementById('mineSaveBtn').addEventListener('click', () => {
+    if (!mineGame) return;
+    const row = document.getElementById('mineInputsRow');
+    const mainInputs = Array.from(row.querySelectorAll('input[data-role="main"]'));
+    const specialInput = row.querySelector('input[data-role="special"]');
+
+    const FREE_LIMIT = 1;
+    if (!isPremium() && loadMine().length >= FREE_LIMIT) {
+      document.getElementById('limitBanner').classList.add('open');
+      document.getElementById('limitBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+
+    const mainVals = [];
+    for (const inp of mainInputs) {
+      const v = inp.value.trim();
+      const lo = Number(inp.min), hi = Number(inp.max);
+      if (v === '' || Number(v) < lo || Number(v) > hi) {
+        inp.focus();
+        return;
+      }
+      mainVals.push(Number(v));
+    }
+    let specialVal = null;
+    if (specialInput) {
+      const v = specialInput.value.trim();
+      if (v === '' || Number(v) < 1 || Number(v) > Number(specialInput.max)) {
+        specialInput.focus();
+        return;
+      }
+      specialVal = Number(v);
+    }
+
+    const labelInput = document.getElementById('mineLabel');
+    const label = labelInput.value.trim() || `My ${mineGame.name}`;
+
+    const entry = {
+      id: Date.now(),
+      label,
+      gameId: mineGame.id,
+      gameName: mineGame.name,
+      kind: mineGame.kind,
+      numbers: mainVals,
+      special: specialVal,
+      savedAt: todayKey,
+    };
+    saveMine(entry);
+    playPromptSound();
+
+    mainInputs.forEach(inp => inp.value = '');
+    if (specialInput) specialInput.value = '';
+    labelInput.value = '';
+    document.getElementById('limitBanner').classList.remove('open');
+  });
+
+  function loadMine() {
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveMine(entry) {
+    try {
+      let list = loadMine();
+      list.unshift(entry);
+      list = list.slice(0, 25);
+      localStorage.setItem(SAVE_KEY, JSON.stringify(list));
+      renderSaved();
+    } catch (e) { /* storage unavailable, ignore */ }
+  }
+
+  function deleteMine(id) {
+    try {
+      let list = loadMine();
+      list = list.filter(e => e.id !== id);
+      localStorage.setItem(SAVE_KEY, JSON.stringify(list));
+      renderSaved();
+    } catch (e) { /* storage unavailable, ignore */ }
+  }
+
+  function renderSaved() {
+    const list = document.getElementById('savedList');
+    const items = loadMine();
+    if (!items.length) {
+      list.innerHTML = '<div class="saved-empty">Nothing saved yet. Pick a game above and enter your numbers.</div>';
+      return;
+    }
+    list.innerHTML = items.map(e => {
+      const shape = e.kind === 'digits' ? 'digit-shape' : '';
+      const mainChips = e.numbers.map(n => `<span class="sc-chip ${shape}">${n}</span>`).join('');
+      const specialChip = e.special !== null && e.special !== undefined
+        ? `<span class="sc-chip special-shape">${e.special}</span>` : '';
+      return `
+        <div class="saved-card">
+          <div class="sc-top">
+            <div>
+              <span class="sc-label">${e.label}</span>
+              <span class="sc-meta">${e.gameName} \u00b7 SAVED ${e.savedAt}</span>
+            </div>
+            <button class="sc-delete" data-del="${e.id}">REMOVE</button>
+          </div>
+          <div class="sc-nums">${mainChips}${specialChip}</div>
+        </div>
+      `;
+    }).join('');
+    list.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => deleteMine(Number(btn.dataset.del)));
+    });
+  }
+
+  renderSaved();
+</script>
+</body>
+</html>
