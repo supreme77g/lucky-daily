@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — Lucky Daily</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Space+Mono:wght@400;700&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #E9E4D4;
+    --paper-2: #DFD9C6;
+    --ink: #18140F;
+    --red: #C31C22;
+    --red-dim: #A5171C;
+    --gold: #C79A1E;
+    --blue: #223A5E;
+    --line: #B9AF93;
+    --white: #FBF9F2;
+  }
+  :root[data-theme="dark"] {
+    --paper: #17140F; --paper-2: #1E1A13; --ink: #EDE7D6; --red: #E14A45;
+    --red-dim: #C43A36; --gold: #E0B94A; --blue: #7FA0CC; --line: #4A4433; --white: #201C15;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #17140F; --paper-2: #1E1A13; --ink: #EDE7D6; --red: #E14A45;
+      --red-dim: #C43A36; --gold: #E0B94A; --blue: #7FA0CC; --line: #4A4433; --white: #201C15;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); font-family: 'Libre Franklin', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  body { min-height: 100vh; display: flex; justify-content: center; padding: 0 0 48px; }
+  .sheet { width: 100%; max-width: 480px; min-height: 100vh; background: var(--paper); }
+
+  .masthead { background: var(--red); color: var(--white); padding: 22px 20px 18px; border-bottom: 4px solid var(--ink); }
+  .back { display: inline-block; color: var(--white); opacity: 0.85; font-family: 'Space Mono', monospace; font-size: 11px; text-decoration: none; margin-bottom: 10px; }
+  .masthead h1 { font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; font-size: 40px; line-height: 0.9; margin: 0; }
+  .masthead .sub { font-size: 13px; margin-top: 6px; font-style: italic; max-width: 32ch; line-height: 1.35; }
+
+  .plans { display: flex; gap: 10px; padding: 22px 20px 6px; }
+  .plan { flex: 1; border: 1px solid var(--line); padding: 16px 14px; background: var(--paper-2); }
+  .plan.premium { background: var(--ink); color: var(--paper); border-color: var(--gold); }
+  .plan-tag { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.06em; opacity: 0.65; }
+  .plan.premium .plan-tag { color: var(--gold); opacity: 1; }
+  .plan-price { font-family: 'Big Shoulders Display', sans-serif; font-weight: 800; font-size: 34px; margin: 4px 0 2px; }
+  .plan-price span { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 400; opacity: 0.6; }
+  .plan-desc { font-size: 12px; line-height: 1.4; opacity: 0.75; margin-bottom: 14px; }
+  .plan.premium .plan-desc { opacity: 0.85; }
+  .plan-btn { display: block; text-align: center; width: 100%; padding: 10px 0; font-family: 'Big Shoulders Display', sans-serif; font-weight: 700; font-size: 15px; text-decoration: none; border: 1px solid var(--ink); color: var(--ink); }
+  .plan.premium .plan-btn { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+
+  .table-wrap { padding: 26px 20px 4px; }
+  .table-label { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.06em; opacity: 0.6; margin: 0 0 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.04em; text-align: center; padding: 8px 4px; opacity: 0.6; font-weight: 400; }
+  th:first-child { text-align: left; }
+  td { padding: 12px 4px; border-top: 1px solid var(--line); text-align: center; }
+  td:first-child { text-align: left; padding-right: 8px; }
+  .yes { color: var(--red); font-weight: 700; }
+  .yes.gold { color: var(--gold); }
+  .no { opacity: 0.3; }
+
+  .note { margin: 24px 20px 0; font-family: 'Space Mono', monospace; font-size: 10.5px; opacity: 0.55; line-height: 1.6; padding-top: 14px; border-top: 3px solid var(--ink); }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="masthead">
+    <a class="back" href="/">← Back to Lucky Daily</a>
+    <h1>PRICING</h1>
+    <div class="sub">Start free. Deacon Digits will let you know when Premium's worth it.</div>
+  </div>
+
+  <div class="plans">
+    <div class="plan">
+      <div class="plan-tag">FREE</div>
+      <div class="plan-price">$0</div>
+      <div class="plan-desc">Play Today's Board as much as you like, plus one free try on each other feature.</div>
+      <a class="plan-btn" href="/">Get Started</a>
+    </div>
+    <div class="plan premium">
+      <div class="plan-tag">PREMIUM</div>
+      <div class="plan-price">$1.99<span>/mo</span></div>
+      <div class="plan-desc">Unlimited everything, plus a new app color every month. Cancel anytime.</div>
+      <a class="plan-btn" href="/">Go Premium</a>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <p class="table-label">WHAT YOU GET</p>
+    <table>
+      <tr><th>Feature</th><th>Free</th><th>Premium</th></tr>
+      <tr><td>Today's Board (Shake It Up)</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
+      <tr><td>Daily Pull</td><td>1 free pull</td><td class="yes">Unlimited</td></tr>
+      <tr><td>Number Games</td><td>1 free draw</td><td class="yes">Unlimited</td></tr>
+      <tr><td>My Numbers (saves)</td><td>1 free save</td><td class="yes">Unlimited</td></tr>
+      <tr><td>New color theme monthly</td><td class="no">—</td><td class="yes gold">✓</td></tr>
+    </table>
+  </div>
+
+  <div class="note">
+    BILLED MONTHLY THROUGH PADDLE.COM. CANCEL ANYTIME — YOU'LL KEEP PREMIUM THROUGH THE END OF YOUR CURRENT BILLING PERIOD.<br>
+    SEE <a href="/terms.html" style="color:inherit;">TERMS</a>, <a href="/privacy.html" style="color:inherit;">PRIVACY</a>, AND <a href="/refund.html" style="color:inherit;">REFUNDS</a> FOR DETAILS.
+  </div>
+</div>
+</body>
+</html>
