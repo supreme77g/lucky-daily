@@ -836,7 +836,7 @@
   <div class="tabs">
     <button class="tab active" id="tabBoard">TODAY'S BOARD</button>
     <button class="tab" id="tabDaily">DAILY PULL</button>
-    <button class="tab" id="tabState">STATE PICK</button>
+    <button class="tab" id="tabState">NUMBER GAMES</button>
     <button class="tab" id="tabMine">MY NUMBERS</button>
   </div>
   <div class="status-bar">
@@ -971,12 +971,7 @@
   <div class="view" id="view-state">
 
     <div class="state-section">
-      <p class="state-intro">Pick your state and your game. Deacon Digits will draw a combo in the right format — straight digits for the daily-number games, numbered balls for the jackpot games.</p>
-
-      <div class="sfield">
-        <label for="stateSelect">Your state</label>
-        <select id="stateSelect"></select>
-      </div>
+      <p class="state-intro">Pick a game and Deacon Digits will draw a combo in the right format — straight digits for the quick draws, numbered balls for the big draws.</p>
 
       <p class="board-label">GAME</p>
       <div class="game-grid" id="gameGrid"></div>
@@ -984,7 +979,7 @@
       <button class="pull-btn" id="stateGoBtn">Draw My Numbers</button>
 
       <div class="limit-banner" id="stateLimitBanner">
-        You've used your free State Pick draw. Go Premium ($1.99/mo) for unlimited draws — plus a new app color every month.
+        You've used your free draw. Go Premium ($1.99/mo) for unlimited draws — plus a new app color every month.
         <br><button id="stateLimitPremiumBtn">Go Premium</button>
       </div>
     </div>
@@ -999,7 +994,7 @@
     </div>
 
     <div class="state-note" style="margin:24px 20px 0;">
-      Game formats shown are common national draw structures (straight digits, or numbered balls plus a bonus ball). Exact rules, ball ranges, and game names vary by state lottery — check your state's official site before playing.
+      These are original Lucky Daily number games made for fun — not modeled on, affiliated with, or intended to represent any official state or national lottery game. For real lottery information, always check your state's official lottery site.
     </div>
 
     <div class="footer">
@@ -1707,31 +1702,13 @@
 
   renderHistory();
 
-  /* ================= STATE PICK LOGIC ================= */
-  const STATES = [
-    'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware',
-    'District of Columbia','Florida','Georgia','Idaho','Illinois','Indiana','Iowa','Kansas',
-    'Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi',
-    'Missouri','Montana','Nebraska','New Hampshire','New Jersey','New Mexico','New York',
-    'North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island',
-    'South Carolina','South Dakota','Tennessee','Texas','Vermont','Virginia','Washington',
-    'West Virginia','Wisconsin','Wyoming',
-  ];
-  const stateSelect = document.getElementById('stateSelect');
-  STATES.forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s;
-    opt.textContent = s;
-    stateSelect.appendChild(opt);
-  });
-  stateSelect.value = 'New York';
-
+  /* ================= NUMBER GAMES LOGIC ================= */
   const GAMES = [
-    { id: 'pick3', name: 'Pick 3', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 3 },
-    { id: 'pick4', name: 'Pick 4', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 4 },
-    { id: 'cash5', name: 'Cash 5', desc: '5 numbers, 1\u201339', kind: 'balls', count: 5, max: 39 },
-    { id: 'powerball', name: 'Powerball', desc: '5 numbers 1\u201369 + Powerball', kind: 'special', count: 5, max: 69, specialLabel: 'Powerball', specialMax: 26 },
-    { id: 'megamillions', name: 'Mega Millions', desc: '5 numbers 1\u201370 + Mega Ball', kind: 'special', count: 5, max: 70, specialLabel: 'Mega Ball', specialMax: 25 },
+    { id: 'triple', name: 'Triple Draw', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 3 },
+    { id: 'quad', name: 'Quad Draw', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 4 },
+    { id: 'fivespot', name: 'Five Spot', desc: '5 numbers, 1\u201335', kind: 'balls', count: 5, max: 35 },
+    { id: 'bigdraw', name: 'Big Draw', desc: '5 numbers 1\u201350 + Bonus Ball', kind: 'special', count: 5, max: 50, specialLabel: 'Bonus Ball', specialMax: 20 },
+    { id: 'granddraw', name: 'Grand Draw', desc: '5 numbers 1\u201345 + Bonus Ball', kind: 'special', count: 5, max: 45, specialLabel: 'Bonus Ball', specialMax: 15 },
   ];
   let activeGame = null;
   const gameGrid = document.getElementById('gameGrid');
@@ -1768,7 +1745,6 @@
       return;
     }
     const g = activeGame;
-    const stateName = stateSelect.value;
     const resultEl = document.getElementById('stateResult');
     const ballsRow = document.getElementById('ballsRow');
     ballsRow.innerHTML = '';
@@ -1805,9 +1781,9 @@
       }
     }
 
-    document.getElementById('stateResultTitle').textContent = `${g.name.toUpperCase()} \u2014 ${stateName.toUpperCase()}`;
+    document.getElementById('stateResultTitle').textContent = g.name.toUpperCase();
     document.getElementById('stateCaption').textContent =
-      `Fresh draw for ${g.name} in ${stateName}, pulled just now by Deacon Digits.`;
+      `Fresh draw for ${g.name}, pulled just now by Deacon Digits.`;
     resultEl.classList.add('open');
     resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     markTried(TRY_STATE_KEY);
