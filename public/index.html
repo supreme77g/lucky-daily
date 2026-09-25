@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lucky Daily</title>
+<title>Deacon Digits</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Space+Mono:wght@400;700&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
@@ -828,15 +828,15 @@
   <div class="masthead">
     <div class="masthead-top">
       <span id="todayDate">—</span>
-      <span>VOL. 1 · DAILY PULL</span>
+      <span>VOL. 1 · DAILY</span>
     </div>
-    <h1>LUCKY DAILY</h1>
-    <div class="sub">With Deacon Digits. Pick your method. Pull your numbers. One combo a day — make it count.</div>
+    <h1>DEACON DIGITS</h1>
+    <div class="sub">With Deacon Digits. Pick your method. One combo a day — make it count.</div>
   </div>
   <div class="tabs">
     <button class="tab active" id="tabBoard">TODAY'S BOARD</button>
-    <button class="tab" id="tabDaily">DAILY PULL</button>
-    <button class="tab" id="tabState">NUMBER GAMES</button>
+    <button class="tab" id="tabDaily">DAILY</button>
+    <button class="tab" id="tabState">NUMBERS</button>
     <button class="tab" id="tabMine">MY NUMBERS</button>
   </div>
   <div class="status-bar">
@@ -871,7 +871,7 @@
       </div>
       <div class="hero-quote" id="hostQuote">
         <span class="host-name">DEACON DIGITS SEZ:</span>
-        "Every day's a new draw, sugah. Shake it up and see what falls out."
+        "Every day's something new, sugah. Give it a shake and see what falls out."
         <span class="who">— DEACON DIGITS</span>
       </div>
     </div>
@@ -896,7 +896,7 @@
     </div>
 
     <div class="jackpot">
-      <div class="jackpot-label">MAIN PULL</div>
+      <div class="jackpot-label">MAIN NUMBERS</div>
       <div class="reels">
         <div class="reel"><div class="reel-strip" id="reelA"></div></div>
         <div class="reel"><div class="reel-strip" id="reelB"></div></div>
@@ -904,11 +904,11 @@
       </div>
     </div>
 
-    <button class="shake-btn" id="shakeBtn">Shake It Up</button>
+    <button class="shake-btn" id="shakeBtn">Shake</button>
 
     <div class="board-footer">
       FOR ENTERTAINMENT PURPOSES ONLY. NOT INTENDED TO ENCOURAGE GAMBLING.<br>
-      TAP "DAILY PULL" ABOVE FOR YOUR LOCKED PICK OF THE DAY.<br>
+      TAP "DAILY" ABOVE FOR YOUR LOCKED PICK OF THE DAY.<br>
       QUESTIONS? <a href="mailto:support@deacondigits.com" class="footer-contact">SUPPORT@DEACONDIGITS.COM</a>
       <div class="policy-links"><a href="/pricing.html">PRICING</a> &middot; <a href="/terms.html">TERMS</a> &middot; <a href="/privacy.html">PRIVACY</a> &middot; <a href="/refund.html">REFUNDS</a></div>
     </div>
@@ -937,10 +937,10 @@
           <input type="tel" inputmode="numeric" id="dobYear" class="dob-input dob-year" maxlength="4" placeholder="YYYY">
         </div>
       </div>
-      <button class="pull-btn" id="pullBtn">Pull My Numbers</button>
+      <button class="pull-btn" id="pullBtn">Show My Numbers</button>
 
       <div class="limit-banner" id="dailyLimitBanner">
-        You've used your free Daily Pull. Go Premium ($1.99/mo) for unlimited daily pulls — plus a new app color every month.
+        You've used your free Daily reveal. Go Premium ($1.99/mo) for unlimited daily numbers — plus a new app color every month.
         <br><button id="dailyLimitPremiumBtn">Go Premium</button>
       </div>
     </div>
@@ -955,13 +955,13 @@
     </div>
 
     <div class="history">
-      <h4>YOUR LAST PULLS</h4>
+      <h4>YOUR LAST NUMBERS</h4>
       <div id="historyList"></div>
     </div>
 
     <div class="footer">
       FOR ENTERTAINMENT PURPOSES ONLY. NOT INTENDED TO ENCOURAGE GAMBLING.<br>
-      ONE PULL PER DAY, PER METHOD.<br>
+      ONE PER DAY, PER METHOD.<br>
       QUESTIONS? <a href="mailto:support@deacondigits.com" class="footer-contact">SUPPORT@DEACONDIGITS.COM</a>
       <div class="policy-links"><a href="/pricing.html">PRICING</a> &middot; <a href="/terms.html">TERMS</a> &middot; <a href="/privacy.html">PRIVACY</a> &middot; <a href="/refund.html">REFUNDS</a></div>
     </div>
@@ -971,15 +971,15 @@
   <div class="view" id="view-state">
 
     <div class="state-section">
-      <p class="state-intro">Pick a game and Deacon Digits will draw a combo in the right format — straight digits for the quick draws, numbered balls for the big draws.</p>
+      <p class="state-intro">Pick one and Deacon Digits will put together a combo in the right format — straight digits for the simple ones, numbered balls for the bigger ones.</p>
 
-      <p class="board-label">GAME</p>
+      <p class="board-label">PICK ONE</p>
       <div class="game-grid" id="gameGrid"></div>
 
-      <button class="pull-btn" id="stateGoBtn">Draw My Numbers</button>
+      <button class="pull-btn" id="stateGoBtn">Show My Numbers</button>
 
       <div class="limit-banner" id="stateLimitBanner">
-        You've used your free draw. Go Premium ($1.99/mo) for unlimited draws — plus a new app color every month.
+        You've used your free reveal. Go Premium ($1.99/mo) for unlimited reveals — plus a new app color every month.
         <br><button id="stateLimitPremiumBtn">Go Premium</button>
       </div>
     </div>
@@ -987,14 +987,14 @@
     <div class="state-result" id="stateResult">
       <div class="result-head">
         <h4 id="stateResultTitle">—</h4>
-        <span class="stamp">FRESH DRAW</span>
+        <span class="stamp">FRESH NUMBERS</span>
       </div>
       <div class="balls-row" id="ballsRow"></div>
       <p class="state-caption" id="stateCaption"></p>
     </div>
 
     <div class="state-note" style="margin:24px 20px 0;">
-      These are original Lucky Daily number games made for fun — not modeled on, affiliated with, or intended to represent any official state or national lottery game. For real lottery information, always check your state's official lottery site.
+      These are original Deacon Digits numbers made for fun — not modeled on, affiliated with, or intended to represent any official state or national lottery. For real lottery information, always check your state's official lottery site.
     </div>
 
     <div class="footer">
@@ -1008,9 +1008,9 @@
   <div class="view" id="view-mine">
 
     <div class="state-section">
-      <p class="state-intro">Got your own combo? Pick your game, enter your numbers, give it a name, and Deacon Digits will keep it on file for you.</p>
+      <p class="state-intro">Got your own combo? Pick one, enter your numbers, give it a name, and Deacon Digits will keep it on file for you.</p>
 
-      <p class="board-label">GAME</p>
+      <p class="board-label">PICK ONE</p>
       <div class="game-grid" id="mineGameGrid"></div>
 
       <div id="mineInputsWrap" style="display:none;">
@@ -1315,7 +1315,7 @@
     });
   }
 
-  /* ---------------- slot machine sound (synthesized, no audio files) ---------------- */
+  /* ---------------- minimal tap sound, confirms the button was pressed ---------------- */
   let audioCtx = null;
   function getAudioCtx() {
     if (!audioCtx) {
@@ -1327,83 +1327,20 @@
     }
     return audioCtx;
   }
-  function playClick(ctx, when, freq, dur, gain) {
+  function playTapSound() {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    const t = ctx.currentTime + 0.01;
     const osc = ctx.createOscillator();
     const g = ctx.createGain();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(freq, when);
-    g.gain.setValueAtTime(gain, when);
-    g.gain.exponentialRampToValueAtTime(0.001, when + dur);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(320, t);
+    g.gain.setValueAtTime(0.18, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
     osc.connect(g);
     g.connect(ctx.destination);
-    osc.start(when);
-    osc.stop(when + dur + 0.01);
-  }
-  function playClunk(ctx, when) {
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(180, when);
-    osc.frequency.exponentialRampToValueAtTime(70, when + 0.12);
-    g.gain.setValueAtTime(0.35, when);
-    g.gain.exponentialRampToValueAtTime(0.001, when + 0.15);
-    osc.connect(g);
-    g.connect(ctx.destination);
-    osc.start(when);
-    osc.stop(when + 0.16);
-  }
-  function playChime(ctx, when) {
-    [660, 880].forEach((f, i) => {
-      const t = when + i * 0.09;
-      const osc = ctx.createOscillator();
-      const g = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(f, t);
-      g.gain.setValueAtTime(0.001, t);
-      g.gain.linearRampToValueAtTime(0.22, t + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
-      osc.connect(g);
-      g.connect(ctx.destination);
-      osc.start(t);
-      osc.stop(t + 0.4);
-    });
-  }
-  function playPromptSound() {
-    const ctx = getAudioCtx();
-    if (!ctx) return;
-    playChime(ctx, ctx.currentTime + 0.02);
-  }
-  function playSpinSound() {
-    const ctx = getAudioCtx();
-    if (!ctx) return;
-    const t0 = ctx.currentTime + 0.02;
-    let t = 0;
-    let interval = 0.035;
-    const totalDuration = 1.58;
-    while (t < totalDuration) {
-      playClick(ctx, t0 + t, 950 + Math.random() * 300, 0.025, 0.12);
-      interval *= 1.045;
-      t += interval;
-    }
-    playClunk(ctx, t0 + 0.90);
-    playClunk(ctx, t0 + 1.24);
-    playClunk(ctx, t0 + 1.58);
-    playChime(ctx, t0 + 1.62);
-  }
-  function playPullSound() {
-    const ctx = getAudioCtx();
-    if (!ctx) return;
-    const t0 = ctx.currentTime + 0.02;
-    let t = 0;
-    let interval = 0.03;
-    const totalDuration = 0.4;
-    while (t < totalDuration) {
-      playClick(ctx, t0 + t, 950 + Math.random() * 300, 0.02, 0.12);
-      interval *= 1.08;
-      t += interval;
-    }
-    playClunk(ctx, t0 + 0.42);
-    playChime(ctx, t0 + 0.46);
+    osc.start(t);
+    osc.stop(t + 0.1);
   }
 
   const shakeBtn = document.getElementById('shakeBtn');
@@ -1412,7 +1349,7 @@
     if (spinning) return;
     spinning = true;
     shakeBtn.disabled = true;
-    playSpinSound();
+    playTapSound();
     renderChips();
     renderHot();
     const dA = Math.floor(Math.random() * 10);
@@ -1438,7 +1375,7 @@
     {
       id: 'birthday',
       name: 'Birthday Numbers',
-      desc: 'Pulled straight from your date of birth.',
+      desc: 'Straight from your date of birth.',
       needsDob: true,
       quote: 'A person\u2019s birthday carries the same three digits their whole life \u2014 you\u2019re just never asked to look at them the right way.',
       who: '\u2014 THE REVEREND',
@@ -1459,7 +1396,7 @@
     },
     {
       id: 'zodiac',
-      name: 'Zodiac Pull',
+      name: 'Zodiac Numbers',
       desc: 'Today\u2019s sign-based combo, recalculated daily.',
       needsDob: true,
       quote: 'Every sign\u2019s got a number that follows it around. Today, yours is loud.',
@@ -1502,10 +1439,10 @@
     },
     {
       id: 'random',
-      name: 'Random Lucky Pick',
+      name: 'Random Pick',
       desc: 'No method, no math \u2014 pure chance.',
       needsDob: false,
-      quote: 'Sometimes the best system is no system at all. Just pull.',
+      quote: 'Sometimes the best system is no system at all. Just go with it.',
       who: '\u2014 TOOTSIE',
       art: `<svg width="56" height="64" viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg">
         <ellipse cx="32" cy="68" rx="26" ry="5" fill="var(--ink)" opacity="0.12"/>
@@ -1632,7 +1569,6 @@
       }
     }
     const digits = generateDigits(activeMode, dobValue);
-    playPullSound();
     showResult(activeMode, digits);
     saveHistory(activeMode, digits);
     markTried(TRY_DAILY_KEY);
@@ -1652,7 +1588,7 @@
       return el;
     });
     document.getElementById('resultCaption').textContent =
-      'One combo, pulled fresh for ' + fmtDate(new Date()) + '. Come back tomorrow for the next one.';
+      'One combo, ready for ' + fmtDate(new Date()) + '. Come back tomorrow for the next one.';
     result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     els.forEach((el, i) => {
       spinBox(el, String(digits[i]), () => Math.floor(Math.random() * 10), 500 + i * 90, i * 70);
@@ -1683,7 +1619,7 @@
     const list = document.getElementById('historyList');
     const hist = loadHistory();
     if (!hist.length) {
-      list.innerHTML = '<div class="history-empty">No pulls yet. Pick a method above to get started.</div>';
+      list.innerHTML = '<div class="history-empty">No numbers yet. Pick a method above to get started.</div>';
       return;
     }
     list.innerHTML = hist.map(h => `
@@ -1704,11 +1640,11 @@
 
   /* ================= NUMBER GAMES LOGIC ================= */
   const GAMES = [
-    { id: 'triple', name: 'Triple Draw', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 3 },
-    { id: 'quad', name: 'Quad Draw', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 4 },
-    { id: 'fivespot', name: 'Five Spot', desc: '5 numbers, 1\u201335', kind: 'balls', count: 5, max: 35 },
-    { id: 'bigdraw', name: 'Big Draw', desc: '5 numbers 1\u201350 + Bonus Ball', kind: 'special', count: 5, max: 50, specialLabel: 'Bonus Ball', specialMax: 20 },
-    { id: 'granddraw', name: 'Grand Draw', desc: '5 numbers 1\u201345 + Bonus Ball', kind: 'special', count: 5, max: 45, specialLabel: 'Bonus Ball', specialMax: 15 },
+    { id: 'triple', name: 'Triple', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 3 },
+    { id: 'quad', name: 'Quad', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 4 },
+    { id: 'fivespot', name: 'Five', desc: '5 numbers, 1\u201335', kind: 'balls', count: 5, max: 35 },
+    { id: 'bigdraw', name: 'Big', desc: '5 numbers 1\u201350 + Bonus Ball', kind: 'special', count: 5, max: 50, specialLabel: 'Bonus Ball', specialMax: 20 },
+    { id: 'granddraw', name: 'Grand', desc: '5 numbers 1\u201345 + Bonus Ball', kind: 'special', count: 5, max: 45, specialLabel: 'Bonus Ball', specialMax: 15 },
   ];
   let activeGame = null;
   const gameGrid = document.getElementById('gameGrid');
@@ -1748,7 +1684,6 @@
     const resultEl = document.getElementById('stateResult');
     const ballsRow = document.getElementById('ballsRow');
     ballsRow.innerHTML = '';
-    playPullSound();
 
     const spins = [];
     if (g.kind === 'digits') {
@@ -1783,7 +1718,7 @@
 
     document.getElementById('stateResultTitle').textContent = g.name.toUpperCase();
     document.getElementById('stateCaption').textContent =
-      `Fresh draw for ${g.name}, pulled just now by Deacon Digits.`;
+      `${g.name} numbers, ready just now from Deacon Digits.`;
     resultEl.classList.add('open');
     resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     markTried(TRY_STATE_KEY);
@@ -1884,7 +1819,6 @@
       savedAt: todayKey,
     };
     saveMine(entry);
-    playPromptSound();
 
     mainInputs.forEach(inp => inp.value = '');
     if (specialInput) specialInput.value = '';
@@ -1924,7 +1858,7 @@
     const list = document.getElementById('savedList');
     const items = loadMine();
     if (!items.length) {
-      list.innerHTML = '<div class="saved-empty">Nothing saved yet. Pick a game above and enter your numbers.</div>';
+      list.innerHTML = '<div class="saved-empty">Nothing saved yet. Pick one above and enter your numbers.</div>';
       return;
     }
     list.innerHTML = items.map(e => {
