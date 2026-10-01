@@ -154,7 +154,8 @@
     opacity: 0.55;
     max-width: 108px;
   }
-  .premium-pill {
+  .kofi-pill {
+    display: inline-block;
     border: 1px solid var(--gold);
     color: var(--gold);
     background: none;
@@ -166,8 +167,9 @@
     cursor: pointer;
     white-space: nowrap;
     flex-shrink: 0;
+    text-decoration: none;
   }
-  .premium-pill.active {
+  .kofi-pill:active {
     background: var(--gold);
     color: var(--ink);
   }
@@ -820,7 +822,20 @@
     opacity: 1;
   }
 </style>
-<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<!--
+  Cloudflare Web Analytics (free, privacy-friendly pageview/visitor counter).
+  deacondigits.com is already on Cloudflare, so this is a 2-minute setup:
+    1. Log in to dash.cloudflare.com
+    2. Go to Analytics & Logs > Web Analytics (left sidebar)
+    3. Click "Add a site" and enter deacondigits.com
+    4. Cloudflare gives you a snippet with your own token in it, like:
+       <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+         data-cf-beacon='{"token": "YOUR_TOKEN_HERE"}'></script>
+    5. Replace the line below with that exact snippet (same spot is fine).
+  Once it's live, Cloudflare shows you visits, pageviews, and top pages —
+  no cookies, no consent banner needed, and it doesn't touch the app's code.
+-->
+<!-- <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "YOUR_TOKEN_HERE"}'></script> -->
 </head>
 <body>
 <div class="sheet">
@@ -828,15 +843,15 @@
   <div class="masthead">
     <div class="masthead-top">
       <span id="todayDate">—</span>
-      <span>VOL. 1 · DAILY</span>
+      <span>VOL. 1 · DAILY PULL</span>
     </div>
     <h1>DEACON DIGITS</h1>
-    <div class="sub">With Deacon Digits. Pick your method. One combo a day — make it count.</div>
+    <div class="sub">With Deacon Digits. Pick your method. Pull your numbers. One combo a day — make it count.</div>
   </div>
   <div class="tabs">
     <button class="tab active" id="tabBoard">TODAY'S BOARD</button>
-    <button class="tab" id="tabDaily">DAILY</button>
-    <button class="tab" id="tabState">NUMBERS</button>
+    <button class="tab" id="tabDaily">DAILY PULL</button>
+    <button class="tab" id="tabState">STATE PICK</button>
     <button class="tab" id="tabMine">MY NUMBERS</button>
   </div>
   <div class="status-bar">
@@ -844,7 +859,7 @@
       <span class="mt-dot" id="mtDot"></span>
       <span id="mtName">—</span>
     </div>
-    <button class="premium-pill" id="premiumPill">$1.99/MO · GO PREMIUM</button>
+    <a class="kofi-pill" id="kofiPill" href="https://ko-fi.com/deacondigits" target="_blank" rel="noopener">☕ SUPPORT DEACON DIGITS</a>
   </div>
   <div class="rule thick"></div>
 
@@ -871,7 +886,7 @@
       </div>
       <div class="hero-quote" id="hostQuote">
         <span class="host-name">DEACON DIGITS SEZ:</span>
-        "Every day's something new, sugah. Give it a shake and see what falls out."
+        "Every day's a new draw, sugah. Shake it up and see what falls out."
         <span class="who">— DEACON DIGITS</span>
       </div>
     </div>
@@ -896,7 +911,7 @@
     </div>
 
     <div class="jackpot">
-      <div class="jackpot-label">MAIN NUMBERS</div>
+      <div class="jackpot-label">MAIN PULL</div>
       <div class="reels">
         <div class="reel"><div class="reel-strip" id="reelA"></div></div>
         <div class="reel"><div class="reel-strip" id="reelB"></div></div>
@@ -904,13 +919,13 @@
       </div>
     </div>
 
-    <button class="shake-btn" id="shakeBtn">Shake</button>
+    <button class="shake-btn" id="shakeBtn">Shake It Up</button>
 
     <div class="board-footer">
       FOR ENTERTAINMENT PURPOSES ONLY. NOT INTENDED TO ENCOURAGE GAMBLING.<br>
-      TAP "DAILY" ABOVE FOR YOUR LOCKED PICK OF THE DAY.<br>
+      TAP "DAILY PULL" ABOVE FOR YOUR LOCKED PICK OF THE DAY.<br>
       QUESTIONS? <a href="mailto:support@deacondigits.com" class="footer-contact">SUPPORT@DEACONDIGITS.COM</a>
-      <div class="policy-links"><a href="/pricing.html">PRICING</a> &middot; <a href="/terms.html">TERMS</a> &middot; <a href="/privacy.html">PRIVACY</a> &middot; <a href="/refund.html">REFUNDS</a></div>
+      <div class="policy-links"><a href="/pricing.html">SUPPORT</a> &middot; <a href="/terms.html">TERMS</a> &middot; <a href="/privacy.html">PRIVACY</a> &middot; <a href="/refund.html">REFUNDS</a></div>
     </div>
   </div>
 
@@ -937,12 +952,8 @@
           <input type="tel" inputmode="numeric" id="dobYear" class="dob-input dob-year" maxlength="4" placeholder="YYYY">
         </div>
       </div>
-      <button class="pull-btn" id="pullBtn">Show My Numbers</button>
+      <button class="pull-btn" id="pullBtn">Pull My Numbers</button>
 
-      <div class="limit-banner" id="dailyLimitBanner">
-        You've used your free Daily reveal. Go Premium ($1.99/mo) for unlimited daily numbers — plus a new app color every month.
-        <br><button id="dailyLimitPremiumBtn">Go Premium</button>
-      </div>
     </div>
 
     <div class="result" id="result">
@@ -955,15 +966,15 @@
     </div>
 
     <div class="history">
-      <h4>YOUR LAST NUMBERS</h4>
+      <h4>YOUR LAST PULLS</h4>
       <div id="historyList"></div>
     </div>
 
     <div class="footer">
       FOR ENTERTAINMENT PURPOSES ONLY. NOT INTENDED TO ENCOURAGE GAMBLING.<br>
-      ONE PER DAY, PER METHOD.<br>
+      ONE PULL PER DAY, PER METHOD.<br>
       QUESTIONS? <a href="mailto:support@deacondigits.com" class="footer-contact">SUPPORT@DEACONDIGITS.COM</a>
-      <div class="policy-links"><a href="/pricing.html">PRICING</a> &middot; <a href="/terms.html">TERMS</a> &middot; <a href="/privacy.html">PRIVACY</a> &middot; <a href="/refund.html">REFUNDS</a></div>
+      <div class="policy-links"><a href="/pricing.html">SUPPORT</a> &middot; <a href="/terms.html">TERMS</a> &middot; <a href="/privacy.html">PRIVACY</a> &middot; <a href="/refund.html">REFUNDS</a></div>
     </div>
   </div>
 
@@ -971,36 +982,37 @@
   <div class="view" id="view-state">
 
     <div class="state-section">
-      <p class="state-intro">Pick one and Deacon Digits will put together a combo in the right format — straight digits for the simple ones, numbered balls for the bigger ones.</p>
+      <p class="state-intro">Pick your state and your game. Deacon Digits will draw a combo in the right format — straight digits for the daily-number games, numbered balls for the jackpot games.</p>
 
-      <p class="board-label">PICK ONE</p>
+      <div class="sfield">
+        <label for="stateSelect">Your state</label>
+        <select id="stateSelect"></select>
+      </div>
+
+      <p class="board-label">GAME</p>
       <div class="game-grid" id="gameGrid"></div>
 
-      <button class="pull-btn" id="stateGoBtn">Show My Numbers</button>
+      <button class="pull-btn" id="stateGoBtn">Draw My Numbers</button>
 
-      <div class="limit-banner" id="stateLimitBanner">
-        You've used your free reveal. Go Premium ($1.99/mo) for unlimited reveals — plus a new app color every month.
-        <br><button id="stateLimitPremiumBtn">Go Premium</button>
-      </div>
     </div>
 
     <div class="state-result" id="stateResult">
       <div class="result-head">
         <h4 id="stateResultTitle">—</h4>
-        <span class="stamp">FRESH NUMBERS</span>
+        <span class="stamp">FRESH DRAW</span>
       </div>
       <div class="balls-row" id="ballsRow"></div>
       <p class="state-caption" id="stateCaption"></p>
     </div>
 
     <div class="state-note" style="margin:24px 20px 0;">
-      These are original Deacon Digits numbers made for fun — not modeled on, affiliated with, or intended to represent any official state or national lottery. For real lottery information, always check your state's official lottery site.
+      Game formats shown are common national draw structures (straight digits, or numbered balls plus a bonus ball). Exact rules, ball ranges, and game names vary by state lottery — check your state's official site before playing.
     </div>
 
     <div class="footer">
       FOR ENTERTAINMENT PURPOSES ONLY. NOT INTENDED TO ENCOURAGE GAMBLING.<br>
       QUESTIONS? <a href="mailto:support@deacondigits.com" class="footer-contact">SUPPORT@DEACONDIGITS.COM</a>
-      <div class="policy-links"><a href="/pricing.html">PRICING</a> &middot; <a href="/terms.html">TERMS</a> &middot; <a href="/privacy.html">PRIVACY</a> &middot; <a href="/refund.html">REFUNDS</a></div>
+      <div class="policy-links"><a href="/pricing.html">SUPPORT</a> &middot; <a href="/terms.html">TERMS</a> &middot; <a href="/privacy.html">PRIVACY</a> &middot; <a href="/refund.html">REFUNDS</a></div>
     </div>
   </div>
 
@@ -1008,9 +1020,9 @@
   <div class="view" id="view-mine">
 
     <div class="state-section">
-      <p class="state-intro">Got your own combo? Pick one, enter your numbers, give it a name, and Deacon Digits will keep it on file for you.</p>
+      <p class="state-intro">Got your own combo? Pick your game, enter your numbers, give it a name, and Deacon Digits will keep it on file for you.</p>
 
-      <p class="board-label">PICK ONE</p>
+      <p class="board-label">GAME</p>
       <div class="game-grid" id="mineGameGrid"></div>
 
       <div id="mineInputsWrap" style="display:none;">
@@ -1025,10 +1037,6 @@
 
         <button class="pull-btn" id="mineSaveBtn">Save These Numbers</button>
 
-        <div class="limit-banner" id="limitBanner">
-          You've used your free save. Go Premium ($1.99/mo) for unlimited saves — plus a new app color every month.
-          <br><button id="limitPremiumBtn">Go Premium</button>
-        </div>
       </div>
     </div>
 
@@ -1040,7 +1048,7 @@
     <div class="footer">
       FOR ENTERTAINMENT PURPOSES ONLY. NOT INTENDED TO ENCOURAGE GAMBLING.<br>
       QUESTIONS? <a href="mailto:support@deacondigits.com" class="footer-contact">SUPPORT@DEACONDIGITS.COM</a>
-      <div class="policy-links"><a href="/pricing.html">PRICING</a> &middot; <a href="/terms.html">TERMS</a> &middot; <a href="/privacy.html">PRIVACY</a> &middot; <a href="/refund.html">REFUNDS</a></div>
+      <div class="policy-links"><a href="/pricing.html">SUPPORT</a> &middot; <a href="/terms.html">TERMS</a> &middot; <a href="/privacy.html">PRIVACY</a> &middot; <a href="/refund.html">REFUNDS</a></div>
     </div>
   </div>
 
@@ -1088,127 +1096,6 @@
 
   const realMonth = new Date().getMonth();
   applyTheme(realMonth);
-
-  /* ---------------- premium (real billing) ---------------- */
-  // Fill these in once you've set up your product in Paddle. Until then,
-  // the button below shows a "coming soon" message instead of a fake toggle.
-  const PADDLE_CLIENT_TOKEN = 'live_5f2dc3d8b8c250ba15fcf35a4ee'; // Paddle > Developer Tools > Authentication > Client-side token
-  const PADDLE_PRICE_ID = 'pri_01m3045jkrk70v9nmhavp4h815';       // your $1.99/mo price
-  const PADDLE_ENV = 'production'; // change to 'production' when you go live
-  const BILLING_CONFIGURED = !PADDLE_CLIENT_TOKEN.includes('XXX') && !PADDLE_PRICE_ID.includes('XXX');
-
-  const EMAIL_KEY = 'luckyDailyEmail';
-  const PREMIUM_CACHE_KEY = 'luckyDailyPremiumCache';
-  const PREMIUM_CACHE_TTL = 5 * 60 * 1000;
-
-  let premiumStatus = false; // in-memory, refreshed from the backend below
-
-  function isPremium() {
-    return premiumStatus;
-  }
-
-  function getStoredEmail() {
-    try { return localStorage.getItem(EMAIL_KEY); } catch (e) { return null; }
-  }
-  function rememberEmail(email) {
-    try {
-      localStorage.setItem(EMAIL_KEY, email.trim().toLowerCase());
-      localStorage.removeItem(PREMIUM_CACHE_KEY);
-    } catch (e) { /* ignore */ }
-  }
-  function readPremiumCache() {
-    try { return JSON.parse(localStorage.getItem(PREMIUM_CACHE_KEY) || 'null'); } catch (e) { return null; }
-  }
-  function writePremiumCache(premium) {
-    try { localStorage.setItem(PREMIUM_CACHE_KEY, JSON.stringify({ premium, checkedAt: Date.now() })); } catch (e) { /* ignore */ }
-  }
-
-  async function refreshPremiumStatus(force) {
-    const email = getStoredEmail();
-    if (!email) { premiumStatus = false; renderPremiumUI(); return; }
-
-    const cached = readPremiumCache();
-    if (!force && cached && Date.now() - cached.checkedAt < PREMIUM_CACHE_TTL) {
-      premiumStatus = cached.premium;
-      renderPremiumUI();
-      return;
-    }
-
-    try {
-      const res = await fetch('/.netlify/functions/check-status?email=' + encodeURIComponent(email));
-      const data = await res.json();
-      premiumStatus = !!data.premium;
-      writePremiumCache(premiumStatus);
-    } catch (e) {
-      premiumStatus = cached ? cached.premium : false;
-    }
-    renderPremiumUI();
-    return premiumStatus;
-  }
-
-  // Right after checkout, Paddle's webhook can take a few seconds to reach
-  // our server. Poll a handful of times instead of checking once and giving
-  // up (which would otherwise get cached as "not premium" for 5 minutes).
-  async function pollPremiumStatus() {
-    for (let i = 0; i < 6; i++) {
-      const premium = await refreshPremiumStatus(true);
-      if (premium) return;
-      await new Promise(r => setTimeout(r, 3000));
-    }
-  }
-
-  function openPaddleCheckout() {
-    if (!BILLING_CONFIGURED || typeof Paddle === 'undefined') {
-      alert('Premium checkout is still being set up \u2014 check back soon!');
-      return;
-    }
-    Paddle.Checkout.open({
-      items: [{ priceId: PADDLE_PRICE_ID, quantity: 1 }],
-    });
-  }
-
-  if (BILLING_CONFIGURED && typeof Paddle !== 'undefined') {
-    if (PADDLE_ENV === 'sandbox') Paddle.Environment.set('sandbox');
-    Paddle.Initialize({
-      token: PADDLE_CLIENT_TOKEN,
-      eventCallback: function (event) {
-        if (event.name === 'checkout.completed') {
-          const email = event.data && event.data.customer && event.data.customer.email;
-          if (email) rememberEmail(email);
-          pollPremiumStatus();
-        }
-      },
-    });
-  }
-
-  function renderPremiumUI() {
-    const pill = document.getElementById('premiumPill');
-    const premium = isPremium();
-    pill.textContent = premium ? '\u2713 PREMIUM' : '$1.99/MO \u00b7 GO PREMIUM';
-    pill.classList.toggle('active', premium);
-    if (premium) {
-      document.getElementById('limitBanner').classList.remove('open');
-      document.getElementById('dailyLimitBanner').classList.remove('open');
-      document.getElementById('stateLimitBanner').classList.remove('open');
-    }
-  }
-  document.getElementById('premiumPill').addEventListener('click', () => { if (!isPremium()) openPaddleCheckout(); });
-  document.getElementById('limitPremiumBtn').addEventListener('click', openPaddleCheckout);
-  document.getElementById('dailyLimitPremiumBtn').addEventListener('click', openPaddleCheckout);
-  document.getElementById('stateLimitPremiumBtn').addEventListener('click', openPaddleCheckout);
-  renderPremiumUI();
-  refreshPremiumStatus();
-
-
-  /* ---------------- try-once trial gates ---------------- */
-  function hasTried(key) {
-    try { return localStorage.getItem(key) === 'true'; } catch (e) { return false; }
-  }
-  function markTried(key) {
-    try { localStorage.setItem(key, 'true'); } catch (e) { /* ignore */ }
-  }
-  const TRY_DAILY_KEY = 'luckyDailyTriedDaily';
-  const TRY_STATE_KEY = 'luckyDailyTriedState';
 
   /* ---------------- tabs ---------------- */
   const tabBoard = document.getElementById('tabBoard');
@@ -1315,7 +1202,7 @@
     });
   }
 
-  /* ---------------- minimal tap sound, confirms the button was pressed ---------------- */
+  /* ---------------- slot machine sound (synthesized, no audio files) ---------------- */
   let audioCtx = null;
   function getAudioCtx() {
     if (!audioCtx) {
@@ -1327,20 +1214,83 @@
     }
     return audioCtx;
   }
-  function playTapSound() {
-    const ctx = getAudioCtx();
-    if (!ctx) return;
-    const t = ctx.currentTime + 0.01;
+  function playClick(ctx, when, freq, dur, gain) {
     const osc = ctx.createOscillator();
     const g = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(320, t);
-    g.gain.setValueAtTime(0.18, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(freq, when);
+    g.gain.setValueAtTime(gain, when);
+    g.gain.exponentialRampToValueAtTime(0.001, when + dur);
     osc.connect(g);
     g.connect(ctx.destination);
-    osc.start(t);
-    osc.stop(t + 0.1);
+    osc.start(when);
+    osc.stop(when + dur + 0.01);
+  }
+  function playClunk(ctx, when) {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(180, when);
+    osc.frequency.exponentialRampToValueAtTime(70, when + 0.12);
+    g.gain.setValueAtTime(0.35, when);
+    g.gain.exponentialRampToValueAtTime(0.001, when + 0.15);
+    osc.connect(g);
+    g.connect(ctx.destination);
+    osc.start(when);
+    osc.stop(when + 0.16);
+  }
+  function playChime(ctx, when) {
+    [660, 880].forEach((f, i) => {
+      const t = when + i * 0.09;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(f, t);
+      g.gain.setValueAtTime(0.001, t);
+      g.gain.linearRampToValueAtTime(0.22, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+      osc.connect(g);
+      g.connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + 0.4);
+    });
+  }
+  function playPromptSound() {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    playChime(ctx, ctx.currentTime + 0.02);
+  }
+  function playSpinSound() {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    const t0 = ctx.currentTime + 0.02;
+    let t = 0;
+    let interval = 0.035;
+    const totalDuration = 1.58;
+    while (t < totalDuration) {
+      playClick(ctx, t0 + t, 950 + Math.random() * 300, 0.025, 0.12);
+      interval *= 1.045;
+      t += interval;
+    }
+    playClunk(ctx, t0 + 0.90);
+    playClunk(ctx, t0 + 1.24);
+    playClunk(ctx, t0 + 1.58);
+    playChime(ctx, t0 + 1.62);
+  }
+  function playPullSound() {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    const t0 = ctx.currentTime + 0.02;
+    let t = 0;
+    let interval = 0.03;
+    const totalDuration = 0.4;
+    while (t < totalDuration) {
+      playClick(ctx, t0 + t, 950 + Math.random() * 300, 0.02, 0.12);
+      interval *= 1.08;
+      t += interval;
+    }
+    playClunk(ctx, t0 + 0.42);
+    playChime(ctx, t0 + 0.46);
   }
 
   const shakeBtn = document.getElementById('shakeBtn');
@@ -1349,7 +1299,7 @@
     if (spinning) return;
     spinning = true;
     shakeBtn.disabled = true;
-    playTapSound();
+    playSpinSound();
     renderChips();
     renderHot();
     const dA = Math.floor(Math.random() * 10);
@@ -1492,7 +1442,6 @@
     document.getElementById('quoteBox').innerHTML = `${activeMode.quote}<span class="who">${activeMode.who}</span>`;
     document.getElementById('dobField').style.display = activeMode.needsDob ? 'block' : 'none';
     document.getElementById('result').classList.remove('open');
-    document.getElementById('dailyLimitBanner').classList.remove('open');
     panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
@@ -1555,11 +1504,6 @@
 
   document.getElementById('pullBtn').addEventListener('click', () => {
     if (!activeMode) return;
-    if (!isPremium() && hasTried(TRY_DAILY_KEY)) {
-      document.getElementById('dailyLimitBanner').classList.add('open');
-      document.getElementById('dailyLimitBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      return;
-    }
     let dobValue = null;
     if (activeMode.needsDob) {
       dobValue = getDobValue();
@@ -1569,9 +1513,9 @@
       }
     }
     const digits = generateDigits(activeMode, dobValue);
+    playPullSound();
     showResult(activeMode, digits);
     saveHistory(activeMode, digits);
-    markTried(TRY_DAILY_KEY);
   });
 
   function showResult(mode, digits) {
@@ -1638,13 +1582,31 @@
 
   renderHistory();
 
-  /* ================= NUMBER GAMES LOGIC ================= */
+  /* ================= STATE PICK LOGIC ================= */
+  const STATES = [
+    'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware',
+    'District of Columbia','Florida','Georgia','Idaho','Illinois','Indiana','Iowa','Kansas',
+    'Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan','Minnesota','Mississippi',
+    'Missouri','Montana','Nebraska','New Hampshire','New Jersey','New Mexico','New York',
+    'North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island',
+    'South Carolina','South Dakota','Tennessee','Texas','Vermont','Virginia','Washington',
+    'West Virginia','Wisconsin','Wyoming',
+  ];
+  const stateSelect = document.getElementById('stateSelect');
+  STATES.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s;
+    opt.textContent = s;
+    stateSelect.appendChild(opt);
+  });
+  stateSelect.value = 'New York';
+
   const GAMES = [
-    { id: 'triple', name: 'Triple', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 3 },
-    { id: 'quad', name: 'Quad', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 4 },
-    { id: 'fivespot', name: 'Five', desc: '5 numbers, 1\u201335', kind: 'balls', count: 5, max: 35 },
-    { id: 'bigdraw', name: 'Big', desc: '5 numbers 1\u201350 + Bonus Ball', kind: 'special', count: 5, max: 50, specialLabel: 'Bonus Ball', specialMax: 20 },
-    { id: 'granddraw', name: 'Grand', desc: '5 numbers 1\u201345 + Bonus Ball', kind: 'special', count: 5, max: 45, specialLabel: 'Bonus Ball', specialMax: 15 },
+    { id: 'pick3', name: 'Pick 3', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 3 },
+    { id: 'pick4', name: 'Pick 4', desc: 'Straight digits, 0\u20139', kind: 'digits', count: 4 },
+    { id: 'cash5', name: 'Cash 5', desc: '5 numbers, 1\u201339', kind: 'balls', count: 5, max: 39 },
+    { id: 'powerball', name: 'Powerball', desc: '5 numbers 1\u201369 + Powerball', kind: 'special', count: 5, max: 69, specialLabel: 'Powerball', specialMax: 26 },
+    { id: 'megamillions', name: 'Mega Millions', desc: '5 numbers 1\u201370 + Mega Ball', kind: 'special', count: 5, max: 70, specialLabel: 'Mega Ball', specialMax: 25 },
   ];
   let activeGame = null;
   const gameGrid = document.getElementById('gameGrid');
@@ -1675,15 +1637,12 @@
       gameGrid.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
-    if (!isPremium() && hasTried(TRY_STATE_KEY)) {
-      document.getElementById('stateLimitBanner').classList.add('open');
-      document.getElementById('stateLimitBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      return;
-    }
     const g = activeGame;
+    const stateName = stateSelect.value;
     const resultEl = document.getElementById('stateResult');
     const ballsRow = document.getElementById('ballsRow');
     ballsRow.innerHTML = '';
+    playPullSound();
 
     const spins = [];
     if (g.kind === 'digits') {
@@ -1718,10 +1677,9 @@
 
     document.getElementById('stateResultTitle').textContent = g.name.toUpperCase();
     document.getElementById('stateCaption').textContent =
-      `${g.name} numbers, ready just now from Deacon Digits.`;
+      `Fresh draw for ${stateName} ${g.name}, pulled just now.`;
     resultEl.classList.add('open');
     resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    markTried(TRY_STATE_KEY);
   });
 
   /* ================= MY NUMBERS LOGIC ================= */
@@ -1778,13 +1736,6 @@
     const mainInputs = Array.from(row.querySelectorAll('input[data-role="main"]'));
     const specialInput = row.querySelector('input[data-role="special"]');
 
-    const FREE_LIMIT = 1;
-    if (!isPremium() && loadMine().length >= FREE_LIMIT) {
-      document.getElementById('limitBanner').classList.add('open');
-      document.getElementById('limitBanner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      return;
-    }
-
     const mainVals = [];
     for (const inp of mainInputs) {
       const v = inp.value.trim();
@@ -1819,11 +1770,11 @@
       savedAt: todayKey,
     };
     saveMine(entry);
+    playPromptSound();
 
     mainInputs.forEach(inp => inp.value = '');
     if (specialInput) specialInput.value = '';
     labelInput.value = '';
-    document.getElementById('limitBanner').classList.remove('open');
   });
 
   function loadMine() {
