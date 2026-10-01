@@ -821,6 +821,59 @@
     text-decoration: underline;
     opacity: 1;
   }
+
+  .promo-card {
+    margin: 22px 20px 0;
+    border: 1px solid var(--line);
+    background: var(--paper-2);
+    padding: 14px 16px;
+  }
+  .promo-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    opacity: 0.55;
+    margin-bottom: 10px;
+  }
+  .promo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-top: 1px solid var(--line);
+  }
+  .promo-item:first-of-type { border-top: none; padding-top: 0; }
+  .promo-item a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .promo-item .pi-name {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    display: block;
+  }
+  .promo-item .pi-desc {
+    font-size: 11px;
+    opacity: 0.6;
+    display: block;
+    margin-top: 1px;
+  }
+  .promo-item .pi-go {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--red);
+    flex-shrink: 0;
+    margin-left: 10px;
+  }
+  .promo-item .pi-soon {
+    font-family: 'Space Mono', monospace;
+    font-size: 9.5px;
+    opacity: 0.45;
+    flex-shrink: 0;
+    margin-left: 10px;
+    white-space: nowrap;
+  }
 </style>
 <!--
   Cloudflare Web Analytics (free, privacy-friendly pageview/visitor counter).
@@ -920,6 +973,24 @@
     </div>
 
     <button class="shake-btn" id="shakeBtn">Shake It Up</button>
+
+    <div class="promo-card">
+      <div class="promo-label">MORE FROM ASW STUDIO</div>
+      <div class="promo-item">
+        <a href="https://mpccopilot.com" target="_blank" rel="noopener">
+          <span class="pi-name">MPC Copilot</span>
+          <span class="pi-desc">AI assistant for Akai MPC users</span>
+        </a>
+        <span class="pi-go">VISIT →</span>
+      </div>
+      <div class="promo-item">
+        <span>
+          <span class="pi-name">BarDrop</span>
+          <span class="pi-desc">AI text-to-rap, synced to your beat</span>
+        </span>
+        <span class="pi-soon">COMING SOON</span>
+      </div>
+    </div>
 
     <div class="board-footer">
       FOR ENTERTAINMENT PURPOSES ONLY. NOT INTENDED TO ENCOURAGE GAMBLING.<br>
